@@ -3,7 +3,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 
 import storage from 'redux-persist/lib/storage'
-import { useReducer } from "react";
+import userReducer from './reducer/user'; 
 
 const config = {
     key: 'tickitz',
@@ -12,7 +12,7 @@ const config = {
 }
 
 const reducers = combineReducers({
-    users: useReducer
+    users: userReducer 
 })
 
 const persistedReducer = persistReducer(config, reducers)
@@ -25,4 +25,4 @@ export default configureStore({
                 ignoreActions:[FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
         })
-})
+});

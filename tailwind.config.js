@@ -1,5 +1,31 @@
-module.exports={
-    plugins: [require("daisyui")],
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}",],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#6379F4",
+      },
+      borderWidth:{
+        DEFAULT: '1px',
+        '0': '0',
+        '2': '2px',
+        '3': '3px',
+        '4': '4px',
+        '6': '6px',
+        '8': '8px',
+      },
+      screens: {
+        'xs': '200px',
+        'sm': '400px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1440px',
+        '2xl': '1920px'
+        }
+    },
+  },
+  plugins: [require("daisyui")],
   daisyui: {
     themes: false, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     darkTheme: "dark", // name of one of the included themes for dark mode
