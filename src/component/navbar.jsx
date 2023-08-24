@@ -78,7 +78,7 @@ const Navbar = () =>{
                           ):(
                             <div className="menu-mobile">
                                 <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center'>SigIn</Link>
-                                <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center mt-5'>SignUp</Link>
+                                <Link to="/sign-up" className='md:hidden xs:flex xs:justify-center mt-5'>SignUp</Link>
                             </div>
                           )}
                           <p className='md:hidden xs:flex xs:justify-center text-font'>@2020 Tickitz. All Right Reserved</p>
@@ -134,7 +134,7 @@ const Navbar = () =>{
                           </button>
 
                           <button className="btn-sign-up btn bg-button">
-                              <Link to='/sign-in' className='text-white'>SignUp</Link>
+                              <Link to='/sign-up' className='text-white'>SignUp</Link>
                           </button>
                         </div>
         )}

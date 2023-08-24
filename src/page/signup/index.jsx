@@ -1,44 +1,34 @@
 import React, {useEffect,useState} from "react";
 import background from "../../assets/background.png"
 import signup from "../../assets/signup.png"
-import useApi from "../../helpers/useApi";
-import { useDispatch } from "react-redux";
 import { useNavigate,Link } from "react-router-dom";
+import axios from 'axios'
 
 function Signup(){
-
-    const navigate = useNavigate()
     const [form, setForm] = useState({})
-    const api = useApi()
-    const [status, setStatus] = useState(0)
-    const dispatch = useDispatch()
-
-    const inputChange = (e) =>{
+    const navigate = useNavigate()
+    const inputChange = (e)=>{
         const data = {...form}
         data[e.target.name] = e.target.value
         setForm(data)
     }
-    const login = async () =>{
-        try {
-            console.log(form)
-            const {data} = await api({
-                method: 'POST',
-                data: form,
-                url:'/auth/'
-            })
-            setStatus(data.status)
-            if(data.status == 201){
-                const token = data.token
-                dispatch(login(token))
-                navigate('/home')
 
-            }
-            console.log(data)
+    const Register = async () => {
+        try {
+            const response = await axios.post("http://localhost:8081/user/", form);
+            console.log("Registrasi Berhasil", response.data);
+
+            setTimeout(() => {  
+                navigate("/login");
+            }, 3000);
         } catch (error) {
-            console.log(error)
-            return error
+            console.error(error.message);
         }
-    }
+    };
+
+
+
+    
     return(
         <>
         <div className="h-screen flex justify-center items-center">
@@ -55,19 +45,14 @@ function Signup(){
             </ul>
             <div>
                 <p>Email</p>
-                <input type="text" name="email" placeholder="enter your email" className="border-2 w-full px-3 py-3" onChange={inputChange}/>
+                <input type="text" name="email_user" placeholder="enter your email" className="border-2 w-full px-3 py-3" onChange={inputChange}/>
             </div>
             <div>
                 <p>Password</p>
                 <input type="password" name="password" placeholder="enter your password" className="border-2 w-full px-3 py-3" onChange={inputChange}/>
             </div>
-            <div className="form-control flex flex-row">
-            <label className="label cursor-pointer"> 
-                <input type="checkbox" checked="checked" className="checkbox" />
-                <span className="label-text">I agree to terms & conditions</span> 
-            </label>
-            </div>
-            <div className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center" onClick={login}>Join For Free Now</div>
+            
+            <div className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center" onClick={Register}>Join For Free Now</div>
             <p className="text-center">already have an account? <Link to="/signin" className="text-blue-500 cursor-pointer">Log In</Link></p>
             <p className="text-center">or</p>
             <img src={signup}/>
