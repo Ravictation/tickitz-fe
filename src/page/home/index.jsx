@@ -1,10 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Navbar from "../../component/navbar";
 import ImageSlide from "../../component/imageslide";
 import Footer from "../../component/footer";
 import BgSubscribe from '../../component/bgsubscribe'
+import useApi from '../../helpers/useApi'
+import CardMovie from "../../component/card";
 
 function Home(){
+    const [movies, setMovies] = useState([])
+    //const [genres, setGenres] = useState([])
+    const api = useApi()
+
+    const getMovies = async() =>{
+        try {
+            const {data} = await api(`http://localhost:5200/movie/all`)
+            console.log(data)
+            setMovies(data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        getMovies()
+    },[])
+
     return(
        <>
        <Navbar/>
@@ -31,7 +51,20 @@ function Home(){
                 <div></div>
             </div>
         </div>
+
+        <div className="p-5 flex flex-wrap gap-5">
+        {movies ? (
+            movies.map((v)=>{
+                return <CardMovie image={v.image_movie} name={v.title_movie} genre={v.genre}/>
+            })
+            ):(
+                <h1>Data Not Found</h1>
+            )
+        }
+        </div>
        </section>
+
+
 
        <div className="w-full pagination flex ">
             <div className="flex mx-auto gap-x-5">
@@ -48,10 +81,11 @@ function Home(){
                 </div>
             </div>
        </div>
-
+{/**
        <div className="subscribe px-20 mt-10">
             <BgSubscribe/>
        </div>
+    */}
        <Footer/>
        </>
     )

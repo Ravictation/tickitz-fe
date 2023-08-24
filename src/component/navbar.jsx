@@ -48,7 +48,7 @@ const Navbar = () =>{
     
             <div className="bg-white border rounded-lg w-screen px-10">
                 <div className="w-full md:flex md:flex-row md:justify-between md:items-center xs:flex xs:flex-row  xs:justify-between xs:items-center  md:px-5 py-5">
-                    <div className="brand-md-menu w-full md:flex md:flex-row md:items-center md:gap-x-10">
+                    <div className="brand-md-menu w-full md:flex md:flex-row md:items-center md:gap-x-20   lg:gap-x-24">
                       <img src={logo} alt=""  className=''/>
                     
         
@@ -66,18 +66,19 @@ const Navbar = () =>{
                           <Link to="/admin">Manage Movie</Link>
                         </div>
                       ) : (
-                        <div className={`${isOpen ? 'block' : 'hidden'} md-menu flex xs:flex-col xs:justify-center xs:gap-y-5 md:flex md:flex-row md:gap-x-7`}>
-                          <input type='text' placeholder='Seacrh' className=' md:hidden xs:flex xs:mx-auto xs:text-center border p-1 border-border rounded-md w-2/4'/>
+                        <div className={`${isOpen ? 'block' : 'hidden'} w-full md-menu flex xs:flex-col xs:justify-center xs:gap-y-5 md:flex md:flex-row md:gap-x-7`}>
                           <Link to="/" className='xs:flex xs:justify-center'>Home</Link>
-                          <Link to="/view-all" className='xs:flex xs:justify-center'>List Movie</Link>
+                          <Link to="/view-all" className='xs:flex xs:justify-center'>Movie</Link>
+                          <Link to="/view-all" className='xs:flex xs:justify-center'>Buy Ticket</Link>
                           {isAuth ? (
                             <div>
                                 <Link to="/profile" className='md:hidden xs:flex xs:justify-center mb-5'>Profile</Link>
                                 <Link to="#" className='md:hidden xs:flex xs:justify-center' onClick={()=> dispatch(logout())}>Logout</Link>
                             </div>
                           ):(
-                            <div>
-                                <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center'>Login</Link>
+                            <div className="menu-mobile">
+                                <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center'>SigIn</Link>
+                                <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center mt-5'>SignUp</Link>
                             </div>
                           )}
                           <p className='md:hidden xs:flex xs:justify-center text-font'>@2020 Tickitz. All Right Reserved</p>
@@ -89,7 +90,7 @@ const Navbar = () =>{
         
         {isAuth ? (
                     
-                <div className="search-md-logo-profile hidden md:flex md:w-8 md:h-8 md:me-10 md:items-center">
+                <div className="search-md-logo-profile hidden md:flex md:w-8 md:h-8 md:me-10 md:items-center justify-center">
                     <button className="modal-open">
                     <svg
                         className="w-4 h-4"
@@ -127,10 +128,14 @@ const Navbar = () =>{
                 </div>
         ):(
                         
-                        <div className="search-md-logo-profile hidden md:flex md:w-8 md:h-8 md:me-10 md:items-center">
-                        <button className="btn-sign-up btn btn-primary">
-                            <Link to='/sign-in' className='text-white'>Login</Link>
-                        </button>
+                        <div className="search-md-logo-profile hidden md:flex md:gap-x-2 lg:gap-x-5 md:items-center">
+                          <button className="btn-sign-in btn">
+                              <Link to='/sign-in' className='text-black'>SignIn</Link>
+                          </button>
+
+                          <button className="btn-sign-up btn bg-button">
+                              <Link to='/sign-in' className='text-white'>SignUp</Link>
+                          </button>
                         </div>
         )}
         
