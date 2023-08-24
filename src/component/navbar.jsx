@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import logo from '../assets/Tickitz-1.png'
 import { useDispatch, useSelector } from "react-redux";
 import Profile from '../assets/default-user.png'
+import { logout } from "../store/reducer/user";
 
 const Navbar = () =>{
     const dispatch = useDispatch()
@@ -72,7 +73,7 @@ const Navbar = () =>{
                           {isAuth ? (
                             <div>
                                 <Link to="/profile" className='md:hidden xs:flex xs:justify-center mb-5'>Profile</Link>
-                                <Link to="#" className='md:hidden xs:flex xs:justify-center'>Logout</Link>
+                                <Link to="#" className='md:hidden xs:flex xs:justify-center' onClick={()=> dispatch(logout())}>Logout</Link>
                             </div>
                           ):(
                             <div>
@@ -118,7 +119,7 @@ const Navbar = () =>{
                     </label>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 md:-me-7 rounded-box w-32 gap-y-1 py-3">
                     <Link to='/profile'>Profile</Link>
-                    <Link to='#'>Logout</Link>
+                    <Link to='#' onClick={()=> dispatch(logout())}>Logout</Link>
                     </ul>
                 </div>
         
