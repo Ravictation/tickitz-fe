@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#6379F4",
+        'button': '#1D4ED8',
+        
       },
       borderWidth:{
         DEFAULT: '1px',
