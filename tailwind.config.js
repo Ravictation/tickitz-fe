@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         'button': '#1D4ED8',
         'background' : '#A0A3BD33',
+        'font': '#8692A6',
+        'placeholder': '#A0A3BD',
+        'fontInput' : '#EFF0F6'
         
       },
       borderWidth:{
