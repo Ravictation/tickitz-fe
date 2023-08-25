@@ -81,7 +81,7 @@ function Order () {
                        <h1 className="font-bold text-xl text-blue-600">$30</h1>
                     </div>
                 </div>
-                <button className="bg-blue-600 w-full py-5 text-white mt-10">Checkout Now</button>
+                <button className="bg-blue-600 w-full py-5 text-white mt-10 rounded-lg">Checkout Now</button>
             </div>
             
             
