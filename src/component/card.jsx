@@ -12,11 +12,11 @@ const navigate = useNavigate()
                     <img src={image} className="object-cover" alt=""/>
                     <div className="absolute h-full w-full bg-black/20 flex items-center justify-center -bottom-0 group-hover:bottom:0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="flex flex-col gap-y-2">
-                            <button className="border text-white rounded-md p-2 text-sm" onClick={()=>navigate('/details')}>
+                            <button className="border text-white rounded-md p-2 text-sm" onClick={()=>navigate('/movie/detail/:id')}>
                                 Details
                             </button>
 
-                            <button className=" bg-button rounded-md p-2 text-sm" onClick={()=>navigate('/book')}>
+                            <button className=" bg-button rounded-md p-2 text-sm" onClick={()=>navigate('/movie/detail/:id')}>
                                 Buy Ticket
                             </button>
                         </div>
@@ -24,8 +24,16 @@ const navigate = useNavigate()
                 </div>
 
                 <div className="body-card mt-2">
-                <h6>{name}</h6>
-                <h8 className="mt-2 border bg-slate-500 text-slate-600 w-full">{genre}</h8>
+                <h6 className="text-md mb-3 tracking-wide font-semibold">{name}</h6>
+                
+                {genre ? 
+                    genre.map((v, index)=> {
+                        return (
+                            <h8 className={`mt-2 me-2 p-1 px-2 border rounded-md bg-slate-500 text-slate-600 w-full ${index == 2 ? 'hidden': ''}`}>
+                                {v.name_genre}
+                            </h8>
+                        )}) : ''                    
+                }
                 </div>
             </div>
         
