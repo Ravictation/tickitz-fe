@@ -24,27 +24,27 @@ function Home() {
     const getMovies = async()=>{
         api({
             method : 'GET',
-            url : `/movies?page=${page}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}`,
-            data : movies
-            }) 
+            url : `/movies?page=${page}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}` ,
+            data: movies    
+        }) 
             .then(({data})=>{
                 setMovies(data.data)
+                console.log(data.data)
             })
             .catch((err)=>{
-            const axiosErr = err.response.data
-            if (axiosErr.message !== undefined) {
-                Show(axiosErr.message, 'warning')
-            } else if (axiosErr.error !== undefined) {
-                Show(axiosErr.error, 'error')
-        }})
+                setMovies(false)
+                console.log(err)
+        })
     }
 
+    console.log(movies)
+    console.log()
     const getGenre = async() =>{
         try {
             const {data} = await api(`http://localhost:8081/genres?${limit}`)
             setGenres(data.data)
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
@@ -121,10 +121,10 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="p-5 flex flex-wrap gap-5">
+                <div className="p-5 flex flex-wrap gap-x-5">
                     {movies ? (
                         movies.map((v) => {
-                            return <CardMovie image={v.image_movie} name={v.title_movie} genre={v.genre} />
+                            return <CardMovie id={v.id_movie} image={v.image} name={v.title} genre={v.genres} />
                         })
                     ) : (
                         <h1>Data Not Found</h1>

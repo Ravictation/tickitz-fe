@@ -1,30 +1,51 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import Navbar from '../../component/navbar'
 import Footer from '../../component/footer'
-//import { useParams } from "react-router-dom";
-//import useApi from '../../helpers/useApi'
+import { useParams } from "react-router-dom";
+import useApi from '../../helpers/useApi'
 import MovieDetail from '../../component/moviedetail'
 import bgFoto from '../../assets/background-1.png'
 import foto from '../../assets/card1.png'
 //import Select from 'react-select'
 
 function Detail (){
-    // const params= useParams()
-    // const paramsId = params.id
-    // const api = useApi()
+    const params= useParams()
+    const paramsId = params.id
+    const [detail, setDetail] = useState([])
+    const api = useApi()
 
 
-    // const getDetail = async () =>{
-    //     const respone = await api(``)
-    //     const data = await respone.data.data
-    // }
+    const getDetail = async () =>{
+        api({
+            method : 'GET',
+            url : `/movies/${paramsId}`,
+            data : detail
+            })             
+            .then(({data})=>{
+                setDetail(data.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+        }
+    
+
+    useEffect(()=>{
+        getDetail()
+    },[])
 
 
     return (
         <div>
             <Navbar/>
 
-            <MovieDetail bgFoto={bgFoto} foto={foto}/>
+            {detail ? (
+                detail.map((v)=>{
+                    return <MovieDetail title={v.title} foto={v.image} bgFoto={v.cover_image}/>
+                })
+            ):(
+                <h1>Data Not Found</h1>
+            )}
 
             <div className="main-book">
                 <div className="hidden lg:flex text-2xl md:px-16 lg:px-20 w-full">
