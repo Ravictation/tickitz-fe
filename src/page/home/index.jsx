@@ -5,25 +5,48 @@ import Footer from "../../component/footer";
 import BgSubscribe from '../../component/bgsubscribe'
 import useApi from '../../helpers/useApi'
 import CardMovie from "../../component/card";
+import {Show} from '../../helpers/toast'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addData } from '../../store/reducer/user';
 
 function Home() {
     const [movies, setMovies] = useState([]);
+    const [genres, setGenres] = useState([])
+    const [filterGenre, setFilterGenre] = useState('')
+    const [filterSearch, setFilterSearch] = useState([])
+    const [page, setPage] = useState(1)
     const api = useApi();
+    const limit = 5
     const dispatch = useDispatch();
     const { isAuth } = useSelector((s) => s.users);
 
-    const getMovies = async () => {
+    const getMovies = async()=>{
+        api({
+            method : 'GET',
+            url : `/movies?page=${page}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}`,
+            data : movies
+            }) 
+            .then(({data})=>{
+                setMovies(data.data)
+            })
+            .catch((err)=>{
+            const axiosErr = err.response.data
+            if (axiosErr.message !== undefined) {
+                Show(axiosErr.message, 'warning')
+            } else if (axiosErr.error !== undefined) {
+                Show(axiosErr.error, 'error')
+        }})
+    }
+
+    const getGenre = async() =>{
         try {
-            const { data } = await api('http://localhost:5200/movie/all');
-            console.log(data);
-            setMovies(data.data);
+            const {data} = await api(`http://localhost:8081/genres?${limit}`)
+            setGenres(data.data)
         } catch (error) {
-            console.log(error);
+            
         }
-    };
+    }
 
     const fetchUser = async () => {
         try {
@@ -35,6 +58,14 @@ function Home() {
         }
     };
 
+    const handlerSearch = (e) =>{
+        if(e.target.value !== ''){
+            setFilterSearch(e.target.value)
+        }else{
+            setFilterSearch('')
+        }
+    };
+
     useEffect(() => {
         getMovies();
 
@@ -42,6 +73,14 @@ function Home() {
             fetchUser();
         }
     }, [isAuth]);
+
+    useEffect(()=>{
+        getGenre()
+    },[limit])
+
+    useEffect(()=>{
+        getMovies()
+    },[filterSearch, filterGenre])
 
     return (
         <>
@@ -59,14 +98,26 @@ function Home() {
 
                             <input
                                 placeholder="Search Movie"
+                                onChange={handlerSearch}
                                 type="text"
                                 className="outline-none"
                             />
                         </form>
                     </div>
 
-                    <div className="filter-genre w-3/5">
-                        <div></div>
+                    <div className="filter-genre w-3/5 lg:mt-8">
+                    <div className="p-2 px-3 flex flex-row gap-x-5">
+                        {genres ?
+                            genres.map((v)=>{
+                                return (
+                                    <div>
+                                    <div className="p-2 px-3 rounded-md hover:bg-button hover:cursor-pointer hover:text-white bg-white text-black" onClick={()=> setFilterGenre(v.id_genre)}>{v.name_genre}</div>
+                                    </div>
+                                )
+                            }):(
+                                <h1>Data Not Found</h1>
+                            )}
+                        </div>
                     </div>
                 </div>
 
