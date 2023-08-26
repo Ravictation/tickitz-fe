@@ -1,139 +1,191 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import logo from '../assets/Tickitz-1.png'
-import { useDispatch, useSelector } from "react-redux";
 import Profile from '../assets/default-user.png'
-import { logout } from "../store/reducer/user";
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../store/reducer/user'
+import { useDispatch, useSelector } from "react-redux";
 
-const Navbar = () => {
+const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
+  const navigates = useNavigate();
   const dispatch = useDispatch()
   const { isAuth, data } = useSelector((s) => s.users)
-  const [isOpen, setIsOpen] = useState(false)
+  console.log(isAuth)
+  const [icon_search, seticon_search] = useState(true)
+  const [header_search, setheader_search] = useState(true)
+  const [menu_desktop, setmenu_desktop] = useState(true)
+  const [menu_mobile, setmenu_mobile] = useState(true)
+  const [menu_location, setmenu_location] = useState(true)
+  const [modal_logout, setmodal_logout] = useState(true)
+  const [location, setlocation] = useState("Location")
+
+  const btnlogout = () => {
+    dispatch(logout())
+    sessionStorage.clear()
+    localStorage.removeItem('Users')
+    navigates(`/sign-in`)
+  }
+
+  function capital(str) {
+    return (str.replace(/\w\S*/g, function (kata) {
+      const kataBaru = kata.slice(0, 1).toUpperCase() + kata.substr(1);
+      return kataBaru
+    }))
+  }
+
+  const show_header_search = () => {
+    seticon_search(false)
+    setheader_search(false)
+  }
+
+  const click_menu_desktop = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmenu_desktop(menu_desktop ? false : true)
+  }
+
+  const click_location = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmenu_desktop(true)
+    setmenu_location(menu_location ? false : true)
+  }
+
+  const click_menu_mobile = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmenu_mobile(menu_mobile ? false : true)
+  }
+  const show_modal_logout = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmenu_mobile(menu_mobile ? false : true)
+    setmenu_desktop(menu_desktop ? false : true)
+    setmodal_logout(false)
+  }
+  const hidden_modal_logout = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmodal_logout(true)
+    modal_logout_profile(false)
+  }
+
+  useEffect(() => {
+    if (btnlogout_trigger) {
+      seticon_search(true)
+      setheader_search(true)
+      setmenu_mobile(true)
+      setmenu_desktop(true)
+      setmodal_logout(false)
+    }
+  }, [btnlogout_trigger])
   return (
-    // <section className="px-10">
-    //     <div className="navbar bg-base-100">
-    //         <div className="navbar-start">
-    //             <div className="dropdown">
-    //             <label tabIndex={0} className="btn btn-ghost lg:hidden">
+    <header className="sticky top-0 px-5 md:px-20 relative flex justify-between py-4 bg-white z-10 md:shadow-sm">
+      <nav className="flex items-center">
+        <img className="h-8 md:h-10 lg:h-14 pe-10" src={logo} alt="" />
+      </nav>
+      <div className="flex items-center">
+        {
+          isAuth ? (
+            data && data.role == 'admin' ? (
+              <>
+                <Link className="hidden lg:block text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/admin">Dashboard</Link>
+                <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/">Movie</Link>
+                <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/list_movie">Manage Movie</Link>
+              </>
+            ) : (
+              <>
+                <Link className="hidden lg:block text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/">Home</Link>
+                <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/#">Movie</Link>
+                <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/#">Buy Ticket</Link>
+              </>
+            )
 
-    //             </label>
-    //             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-    //                 <li><Link>Home</Link></li>
-    //                 <li>
-    //                 <Link>Movie</Link>
-    //                 </li>
-    //                 <li><Link>Buy Ticket</Link></li>
-    //             </ul>
-    //             </div>
-    //             <Link className="btn btn-ghost normal-case text-xl">
-    //             <img src={logo} alt=""></img>
-    //             </Link>
-    //         </div>
-    //         <div className="navbar-center hidden lg:flex">
-    //             <ul className="menu menu-horizontal px-1">
-    //             <li><Link>Home</Link></li>
-    //             <li><Link>Movie</Link></li>
-    //             <li><Link>Buy Ticket</Link></li>
-    //             </ul>
-    //         </div>
-    //         <div className="navbar-end hidden lg:flex">
-    //             <div className="">
-    //                 <Link className="btn bg-white border border-button mx-5">SignIn</Link>
-    //                 <Link className="btn bg-button text-white">Sign Up</Link>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </section>
-
-    <div className="bg-white border rounded-lg w-screen px-10">
-      <div className="w-full md:flex md:flex-row md:justify-between md:items-center xs:flex xs:flex-row  xs:justify-between xs:items-center  md:px-5 py-5">
-        <div className="brand-md-menu w-full md:flex md:flex-row md:items-center md:gap-x-20   lg:gap-x-24">
-          <img src={logo} alt="" className='' />
-          <div className='w-full md:hidden mb-10'>
-            <button onClick={() => setIsOpen(!isOpen)} className='w-full md:hidden xs:flex xs:justify-end -mt-10'>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </button>
-          </div>
-
-          {data.role == 'admin' ? (
-            <div className="md-menu  md:flex md:flex-row md:gap-x-7">
-              <Link to="/">Home</Link>
-              <Link to="/admin">Manage Movie</Link>
-            </div>
           ) : (
-            <div className={`${isOpen ? 'block' : 'hidden'} w-full md-menu flex xs:flex-col xs:justify-center xs:gap-y-5 md:flex md:flex-row md:gap-x-7`}>
-              <Link to="/" className='xs:flex xs:justify-center'>Home</Link>
-              <Link to="/view-all" className='xs:flex xs:justify-center'>Movie</Link>
-              <Link to="/view-all" className='xs:flex xs:justify-center'>Buy Ticket</Link>
-              {isAuth ? (
-                <div>
-                  <Link to="/profile" className='md:hidden xs:flex xs:justify-center mb-5'>Profile</Link>
-                  <Link to="#" className='md:hidden xs:flex xs:justify-center' onClick={() => dispatch(logout())}>Logout</Link>
-                </div>
-              ) : (
-                <div className="menu-mobile">
-                  <Link to="/sign-in" className='md:hidden xs:flex xs:justify-center'>SigIn</Link>
-                  <Link to="/sign-up" className='md:hidden xs:flex xs:justify-center mt-5'>SignUp</Link>
-                </div>
-              )}
-              <p className='md:hidden xs:flex xs:justify-center text-font'>@2020 Tickitz. All Right Reserved</p>
-            </div>
-          )}
-        </div>
-
-
-        {isAuth ? (
-          <div className="search-md-logo-profile hidden md:flex md:w-8 md:h-8 md:me-10 md:items-center justify-center">
-            <button className="">
-              <svg
-                className="w-4 h-4"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
-            </button>
-            <button className="btn-dropdown-profile">
-              <div className="dropdown dropdown-hover dropdown-bottom dropdown-end">
-                <label tabIndex={0} className=" m-1">
-                  <img
-                    src={Profile}
-                    className="md:w-8 md:h-8 md:ms-7 mx-auto"
-                    alt=""
-                  />
-                </label>
-                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 md:-me-7 rounded-box w-32 gap-y-1 py-3">
-                  <Link to='/profile'>Profile</Link>
-                  <Link to='#' onClick={() => dispatch(logout())}>Logout</Link>
-                </ul>
-              </div>
-
-            </button>
-          </div>
-        ) : (
-
-          <div className="search-md-logo-profile hidden md:flex md:gap-x-2 lg:gap-x-5 md:items-center">
-            <button className="btn-sign-in btn">
-              <Link to='/sign-in' className='text-black'>SignIn</Link>
-            </button>
-
-            <button className="btn-sign-up btn bg-button">
-              <Link to='/sign-up' className='text-white'>SignUp</Link>
-            </button>
-          </div>
-        )}
+            <>
+              <Link className="hidden lg:block text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/">Home</Link>
+              <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/#">Movie</Link>
+              <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/#">Buy Ticket</Link>
+            </>
+          )
+        }
       </div>
-    </div>
+      <div className={isAuth ? "hidden" : "block"}>
+        <button onClick={() => { navigates(`/sign-in`) }} className="mt-2 h-6 w-16 md:h-8 md:w-20 bg-[#5F2EEA] rounded-md text-[10px] md:text-[12px] tracking-wide text-white">Sign Up</button>
+      </div>
+      <div className={isAuth ? "flex items-center" : "hidden"}>
+        <div className="flex">
+          <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide mr-3" to="/#">{location}</Link>
+          <i onClick={click_location} className="fa fa-sort-desc right-0 top-[10px] w-5 h-5 mr-7" aria-hidden="true" />
+        </div>
+        <Link to="/#" onClick={show_header_search} className={icon_search ? 'hidden lg:block pe-8' : 'hidden'}>
+          <i className="fa fa-search text-[#414141]" aria-hidden="true" />
+        </Link>
+        <div className={header_search ? 'hidden' : 'hidden lg:relative pe-8 lg:flex lg:items-center'}>
+          <i className="fa fa-search text-[#6E7192] absolute left-2" aria-hidden="true" />
+          <input type="text" className="h-7 w-50 rounded-xl border pl-7" placeholder="Search . . ." />
+        </div>
+        <Link className='hidden lg:flex h-[40px] w-[40px]' onClick={click_menu_desktop}>
+          <img className="w-full object-cover rounded-full" src={isAuth ? data && data.image_user != '' ? data.image_user : '' : ''} alt="" />
+        </Link>
+        <Link className="block lg:hidden" onClick={click_menu_mobile}><i className="fa fa-bars" style={{ maxWidth: '200px' }} aria-hidden="true" /></Link>
+      </div>
 
+      <div className={menu_location ? "hidden" : "hidden lg:grid absolute bg-white rounded shadow-md right-56 top-[4.5rem]"}>
+        <Link onClick={() => setlocation("Indonesia")} className="px-3 tracking-wide font-normal hover:font-bold">Indonesia</Link>
+        <Link onClick={() => setlocation("Singapore")} className="px-3 tracking-wide font-normal hover:font-bold">Singapore</Link>
+      </div>
+
+      <div className={menu_desktop ? "hidden" : "hidden lg:grid absolute bg-white rounded shadow-md right-24 top-[4.5rem]"}>
+        <p className="px-3 py-2 tracking-wide font-normal border-b">{data ? data.first_name != "" && data.last_name != "" ? capital(data.first_name + ' ' + data.last_name) : "No Name" : 'Guest'}</p>
+        <Link className="px-3 tracking-wide font-normal hover:font-bold" to="/profile">Profile</Link>
+        <p><Link className="px-3 tracking-wide font-normal hover:font-bold" onClick={show_modal_logout}>Logout</Link>
+        </p>
+      </div>
+      <div className={modal_logout ? "hidden" : "block absolute h-screen w-full top-0 left-0 bg-black bg-opacity-50 text-center grid items-center justify-around"}>
+        <div className="bg-white p-5 rounded-lg">
+          <div className="flex pb-2 border-b justify-between items-center">
+            <h1 className="tracking-wider font-bold">Logout</h1>
+            <Link onClick={hidden_modal_logout}><i className="fa fa-times" aria-hidden="true" /></Link>
+          </div>
+          <div className="py-5">
+            <p>Are you sure you want to logout?</p>
+          </div>
+          <div className="flex pt-2 border-t justify-between items-center">
+            <button onClick={btnlogout} className="bg-[#dc2626] h-8 w-20 rounded-lg text-white font-bold text-sm">Log
+              Out</button>
+          </div>
+        </div>
+      </div>
+      <div className={menu_mobile ? "hidden" : "block lg:hidden absolute h-screen w-full left-0 bg-black bg-opacity-50 mt-[2.8rem] md:mt-[3.5rem] text-center"} >
+        <div className="flex bg-white justify-around pb-4">
+          <div className="relative w-4/5">
+            <i className="fa fa-search absolute top-3 left-4 text-[#6E7191]" aria-hidden="true" />
+            <input type="text" className="h-10 w-full border rounded placeholder: pl-10" placeholder="Search..." />
+          </div>
+        </div>
+        {
+          data && data.role == 'admin' ? (
+            <>
+              <p className="bg-white border-t border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/admin">Dashboard</Link></p>
+              <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/list_movie">Manage Movie</Link></p>
+              <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/manage_schedule">Manage Schedule</Link></p>
+            </>
+          ) : (
+            <>
+              <p className="bg-white border-t border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/">Home</Link></p>
+              <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/#">Movie</Link></p>
+              <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/#">Buy Ticket</Link></p>
+            </>
+          )
+        }
+        <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link to="/profile" >Profile</Link></p>
+        <p className="bg-white border-b py-3 tracking-wide text-sm md:text-base hover:font-bold"><Link onClick={show_modal_logout}>Logout</Link></p>
+        <p onClick={click_menu_mobile} className="bg-white border-b py-3 tracking-wide text-xs md:text-sm">©
+          2020 Tickitz.
+          All Rights
+          Reerved.</p>
+      </div>
+    </header >
   )
 }
 

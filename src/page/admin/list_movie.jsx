@@ -5,6 +5,7 @@ import useApi from '../../helpers/useApi'
 import Pagination from "../../component/pagination"
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from '../../store/reducer/user'
 
 function List_Movie() {
     const dateRef = useRef(null);
@@ -75,8 +76,8 @@ function List_Movie() {
     return (
         <>
             <Navbar />
-            <section className='mx-auto bg-background h-full'>
-                <div className="p-5 bg-background">
+            <section className='bg-background px-5 md:px-20 py-10'>
+                <div className="">
                     <div className="grid grid-row-3 bg-white rounded-2xl px-10 py-5">
                         <div className="flex">
                             <div className="w-full font-[#14142B] font-semibold text-xl">
@@ -96,13 +97,13 @@ function List_Movie() {
                         <div className="w-full mt-5">
                             <table className="w-full text-center">
                                 <tr className="text-[12px] font-semibold h-10">
-                                    <td>No</td>
-                                    <td>Tumbnail</td>
-                                    <td>Movie Name</td>
-                                    <td>Category</td>
-                                    <td>Release Date</td>
-                                    <td>Duration</td>
-                                    <td>Action</td>
+                                    <td className="">No</td>
+                                    <td className="">Tumbnail</td>
+                                    <td className="">Movie Name</td>
+                                    <td className="">Category</td>
+                                    <td className="">Release Date</td>
+                                    <td className="">Duration</td>
+                                    <td className="">Action</td>
                                 </tr>
                                 {
                                     movies ? (
@@ -129,9 +130,13 @@ function List_Movie() {
                                             )
                                         })
                                     ) : (
-                                        <div className="mb-5">
-                                            <h1 className="text-[#4E4B66]">Data not found</h1>
-                                        </div>
+                                        <tr>
+                                            <td colspan="7">
+                                                <div className="mb-5">
+                                                    <h1 className="text-[#4E4B66]">Data not found</h1>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     )
                                 }
                             </table>
