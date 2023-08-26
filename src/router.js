@@ -8,6 +8,7 @@ import Admin from "./page/admin";
 import Signin from "./page/signin";
 import Detail from "./page/detail";
 import Profile from "./page/profile";
+import Payment from "./page/payment";
 
 function Router(){
     return (
@@ -22,9 +23,10 @@ function Router(){
             <Route path="/admin" element={<Admin/>}/>
             <Route path="/sign-in" element={<Signin/>}/>
             <Route path="/profile" element={<Profile/>}/>
+            <Route path="/payment" element={<Payment/>}/>
         </Routes>
         </BrowserRouter>
     )
 }
 
-export default Router
+export default Router   

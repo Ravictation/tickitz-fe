@@ -90,7 +90,7 @@ const Navbar = () =>{
         {isAuth ? (
                     
                 <div className="search-md-logo-profile hidden md:flex md:w-8 md:h-8 md:me-10 md:items-center justify-center">
-                    <button className="modal-open">
+                    <button className="">
                     <svg
                         className="w-4 h-4"
                         xmlns="http://www.w3.org/2000/svg"
