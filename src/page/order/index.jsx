@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Navbar from "../../component/navbar";
 import Footer from "../../component/footer";
 import dummy from "../../assets/Vector-1.png"
@@ -7,8 +7,51 @@ import available from "../../assets/seatavail.jpg"
 import selected from "../../assets/seat selected.png"
 import sold from "../../assets/seatsold.png"
 import lovenest from "../../assets/seatlove.png"
-
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { confirmationdetails, confirmationseats } from "../../store/reducer/user";
 function Order () {
+    const dispatch = useDispatch()
+    const params = useParams()
+    const navigate = useNavigate
+    const [details, setDetails] = useState([])
+    const [image, setImage] = useState('')
+    const [storeData, setStoreData] = useState({})
+    const { seats, title, premiere, date, time, tickets } = useSelector ((s) => s.users)
+
+    const inputChange = (e) => {
+        const data = {...storeData}
+        data[e.target.name] = e.target.value
+        setStoreData(data)
+       
+      }
+    const getMovies = async () => {
+        try {
+            const {data} = await axios.get('http://localhost:8081/times_schedules/' + params.id)
+            setDetails(data.data[0])
+            setImage(data.data[0].image_premier)
+            dispatch(
+                confirmationdetails({
+                  title: data.data[0].title,
+                  premiere: data.data[0].name_premier,
+                  date: data.data[0].set_date,
+                  time: data.data[0].time_schedule,
+                  scheduleid: data.data[0].id_time_schedule
+                })
+              );
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{
+        getMovies()
+      }, [])
+ 
+      const handleContinue = () => {
+        dispatch(confirmationseats(storeData))
+      }
     return(
         <>
         <Navbar/>
@@ -23,16 +66,16 @@ function Order () {
         <div className="flex flex-row w-full mt-5">
             <div className="bg-white w-2/3 mx-5 rounded-lg px-5 py-5">
             <div className=" border border-gray-300 mt-5 px-5 py-5 flex flex-row gap-x-5">
-                <img src={dummy} className="bg-cover bg-center w-1/3" alt="" />
+                <img src={image} className="bg-cover bg-center w-1/3" alt="" />
                 <div className="w-2/3">
-                    <h1>Title</h1>
+                    <h1>{details.title}</h1>
                     <div className="flex flex-row">
                     <div className="block bg-gray-100 rounded-lg px-2 py-1 text-gray-400">Genre</div>
                     <div className="block bg-gray-100 rounded-lg px-2 py-1 text-gray-400">Genre</div>
                     </div>
                     <div className="flex flex-row justify-between">
-                        <p>Date & time</p>
-                    <button className="rounded-lg bg-blue-700 text-white px-5 py-2">Change</button>
+                        <p>{`Regular - ${details.time_schedule}`}</p>
+                    <button className="rounded-lg bg-blue-700 text-white px-5 py-2" onClick={() => navigate(`/movie/detail/${details.id_movie}`)}>Change</button>
                     </div>
                 </div>
             </div>
@@ -56,23 +99,25 @@ function Order () {
             </div>
             <div className="w-1/3 mx-5 rounded-lg h-full">
                 <div className="bg-white flex flex-col pt-10 pb-10 justify-items-center rounded-lg">
-                    <img src={dummy} className="bg-cover w-1/2" alt="" />
-                    <h1 className="font-bold text-xl text-center">Cinema</h1>
+                   <div className="items-center justify-center flex">
+                   <img src={image} className="bg-cover w-1/2" alt="" />
+                   </div>
+                    <h1 className="font-bold text-xl text-center">{details.name_premier}</h1>
                     <div className="flex flex-row justify-between mx-5">
                         <p>Movie Selected</p>
-                        <p>Title</p>
+                        <p>{details.title}</p>
                     </div>
                     <div className="flex flex-row justify-between mx-5">
                         <p>Date</p>
-                        <p>Time</p>
+                        <p>{details.time_schedule}</p>
                     </div>
                     <div className="flex flex-row justify-between mx-5">
                         <p>One Ticket Price</p>
-                        <p>Ticket</p>
+                        <p>{details.price}</p>
                     </div>
                     <div className="flex flex-row justify-between mx-5">
                         <p>Seat Choosed</p>
-                        <p>C4, C5, C6</p>
+                        <input type="text" className="border border-gray-300 py-2 px-5 rounded-lg" placeholder="input your seats" name="seats" onChange={inputChange}/>
                     </div>
                     <hr className="my-3 border-gray-300" />
 
@@ -81,7 +126,7 @@ function Order () {
                        <h1 className="font-bold text-xl text-blue-600">$30</h1>
                     </div>
                 </div>
-                <button className="bg-blue-600 w-full py-5 text-white mt-10 rounded-lg">Checkout Now</button>
+                <Link to="/payment" className="block bg-blue-600 w-full py-5 text-white mt-10 rounded-lg text-center" onClick={handleContinue}>Checkout Now</Link>
             </div>
             
             

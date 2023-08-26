@@ -95,7 +95,6 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
               <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide" to="/#">Buy Ticket</Link>
             </>
           )
-
         }
       </nav>
       <div className={isAuth ? "hidden" : "block"}>

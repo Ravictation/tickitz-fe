@@ -8,11 +8,12 @@ const userSlice = createSlice({
         data:{},
         date:'',
         time:'',
-        location:'',
         premiere:'',
         title:'',
         tickets:'',
-        price:''
+        price:'',
+        seats:'',
+        scheduleid:''
     },
     reducers:{
         login(state, actions){
@@ -31,21 +32,24 @@ const userSlice = createSlice({
                 data:{}
             }
         },
-        confirmationdate(state, actions){
+        confirmationdetails(state, actions){
             return{
                 ...state,
+                title: actions.payload.title,
+                tickets: actions.payload.tickets,
+                price: actions.payload.price,
                 date: actions.payload.date,
                 time: actions.payload.time,
-                locations: actions.payload.locations,
-                premiere: actions.payload.premiere
+                premiere: actions.payload.premiere,
+                scheduleid: actions.payload.scheduleid
             }
         },
         confirmationseats(state,actions) {
             return {
                 ...state,
-                title: actions.payload.title,
-                tickets: actions.payload.tickets,
-                price: actions.payload.price
+                
+                seats: actions.payload.seats,
+               
             }
         },
         addData(state, actions) {
@@ -58,5 +62,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {login, logout, confirmationdate, confirmationseats, addData}=userSlice.actions
+export const {login, logout, confirmationdetails, confirmationseats, addData}=userSlice.actions
 export default userSlice.reducer
