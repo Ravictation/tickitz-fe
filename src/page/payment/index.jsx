@@ -18,9 +18,12 @@ function Payment(){
         const virtualAccountNumber = randomNumbers.join("");
         return virtualAccountNumber;
       };
-    const {seats, scheduleid} = useSelector ((s)=> s.users)
-      const virtualAccount = generateVirtualAccount();
-      const copyToClipboard = () => {
+    const {seats, scheduleid, date, time, premiere, title, price } = useSelector ((s)=> s.users)
+    const ticketData = seats; 
+    const ticketsArray = ticketData.split(",");
+    const ticketCount = ticketsArray.length;
+    const virtualAccount = generateVirtualAccount();
+    const copyToClipboard = () => {
         navigator.clipboard.writeText(virtualAccount)
           .then(() => {
             console.log("Virtual account copied to clipboard");
@@ -67,19 +70,19 @@ function Payment(){
         <div className="bg-white w-3/4 px-10 py-10">
         <h1 className="font-bold text-2xl">Payment Info</h1>
         <p className="text-lg text-gray-300 mt-5">DATE & TIME</p>
-        <p className="text-lg mt-3">DATE</p>
+        <p className="text-lg mt-3">{`Tuesday ${date} at ${time}`}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">MOVIE TITLE</p>
-        <p className="text-lg mt-3">SPIDERMAN</p>
+        <p className="text-lg mt-3">{title}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">CINEMA NAME</p>
-        <p className="text-lg mt-3">CINEONE</p>
+        <p className="text-lg mt-3">{premiere}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">NUMBER OF TICKETS</p>
-        <p className="text-lg mt-3">3 PIECES</p>
+        <p className="text-lg mt-3">{`${ticketCount} pieces`}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">TOTAL PAYMENT</p>
-        <p className="text-lg mt-3 text-blue-800 font-bold">$30,00</p>
+        <p className="text-lg mt-3 text-blue-800 font-bold">{ticketCount * price}</p>
         <hr className="border-gray-300 my-3 w-full" />
 
         <h1 className="font-bold text-2xl mt-10">PERSONAL INFORMATION</h1>

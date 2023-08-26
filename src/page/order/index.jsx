@@ -21,6 +21,8 @@ function Order () {
     const [storeData, setStoreData] = useState({})
     const { seats, title, premiere, date, time, tickets } = useSelector ((s) => s.users)
 
+    
+
     const inputChange = (e) => {
         const data = {...storeData}
         data[e.target.name] = e.target.value
@@ -38,7 +40,8 @@ function Order () {
                   premiere: data.data[0].name_premier,
                   date: data.data[0].set_date,
                   time: data.data[0].time_schedule,
-                  scheduleid: data.data[0].id_time_schedule
+                  scheduleid: data.data[0].id_time_schedule,
+                  price : data.data[0].price
                 })
               );
         } catch (error) {

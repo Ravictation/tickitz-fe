@@ -94,7 +94,7 @@ function Profile() {
                 <input type="file" name="image_user" onChange={handleImageChange} ref={inputRef} style={{ display: "none" }} />
                 </span>
                 </div>
-                <p className="font-bold text-xl mt-5">Jonas El Rodriguez</p>
+                <p className="font-bold text-xl mt-5">{`${data.first_name} ${data.last_name}`}</p>
                 <p className="mt-5">Moviegoers</p>
                 <hr className="border-gray-300 my-3 w-full" />
                 <img className="mt-5" src={loyalty} alt="" />
@@ -104,7 +104,7 @@ function Profile() {
             <div className="w-3/4 flex flex-col gap-y-10">
                 <div className="bg-white rounded-lg py-5 px-5 ">
                     <Link to="/profile" className="mr-5 font-medium border-b-2 border-blue-700 py-5">Account Settings</Link>
-                    <Link to="/history">Order History</Link>
+                    <Link to="/profile/history">Order History</Link>
                     </div>
                 <div className="bg-white rounded-lg py-5 px-5">
                     <p>Details Information</p>
