@@ -3,85 +3,60 @@ import logo from '../assets/Tickitz-1.png'
 import cinema1 from '../assets/Vector-3.png'
 import cinema2 from '../assets/Vector-2.png'
 import cinema3 from '../assets/Vector-1.png'
-import fb from '../assets/fb.png'
-import yt from '../assets/icons8-youtube-50.png'
-import ig from '../assets/icons8-instagram-50.png'
-import tw from '../assets/twitter.png'
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className='w-screen lg:px-10'>
-      <footer className="footer-view-all w-full ps-8 pe-8 md:pb-12 bg-white md:gap-x-7 mt-3 pt-7 md:grid md:grid-flow-col lg:gap-x-30 sm:flex sm:flex-col sm:gap-y-7">
-
-        <div className="footer-1 md:flex md:flex-col md:ms-5 xl:flex">
-          <img src={logo} className="md:w-32" alt="" />
-          <div className="stop-watch mt-3 text-font md:text-xs xs:text-base font-sans">
-            <p>
-              Stop waiting in line. Buy tickets <br />
-              conveniently, watch movies quietly.
-            </p>
+    <footer className="px-5 pt-5 md:px-20 flex flex-col bg-white">
+      <div className="flex flex-wrap flex-col md:flex-row justify-between">
+        <div className="basis-1/4">
+          <img className="h-16 mb-3" src={logo} alt="" />
+          <p className="text-[#6E7191] text-sm mb:text-base tracking-wide">Stop waiting in line. Buy tickets
+            conveniently, watch movies quietly.</p>
+        </div>
+        <div>
+          <p className="text-base font-bold mb-2 md:mb-5 mt-9 md:mt-0">Explore</p>
+          <div className="flex flex-row md:flex-col">
+            <p className="my-1 text-[#4E4B66] text-sm tracking-wide me-4 md:me-0"><Link to="/#">Cinemas</Link></p>
+            <p className="my-1 text-[#4E4B66] text-sm tracking-wide"><Link to="/">Movie List</Link></p>
+            <p className="my-1 text-[#4E4B66] text-sm tracking-wide"><Link to="/profile/history">My Tickets</Link></p>
+            <p className="my-1 text-[#4E4B66] text-sm tracking-wide"><Link to="/#">Notification</Link></p>
           </div>
         </div>
-
-        <div className="footer-3 md:flex md:flex-col xs:flex xs:flex-wrap xs:flex-row xs:mt-5 xs xl:flex lg:mx-auto">
-          <p className="font-bold md:mb-5 xs:w-full">Explore</p>
-          <p className="text-font md:mb-3 md:text-sm xs:w-2/4">
-            <Link href="index.html">Home</Link>
-          </p>
-          <p className="text-font text-sm md:w-full xs:w-2/4">
-            <Link href="#">List Movie</Link>
-          </p>
+        <div>
+          <p className="text-base font-bold mb-2 mb:mb-5 mt-7 md:mt-0">our Sponsor</p>
+          <div className="grid grid-flow-col auto-cols-max md:grid-flow-row md:auto-rows-max">
+            <img className="h-4 md:h-7 me-4 my-2" src={cinema1} alt="" />
+            <img className="h-4 md:h-7 me-4 my-2" src={cinema2} alt="" />
+            <img className="h-4 md:h-7 my-2" src={cinema3} alt="" />
+          </div>
         </div>
-
-        <div className="footer-3 md:gap-y-5 md:flex md:flex-col xs:flex xs:flex-wrap xs:flex-row xs:gap-x-5 xs:mt-5 xl:flex lg:mx-auto">
-          <p className="font-bold text-sm xs:w-full xs:mb-3">Our Sponsor</p>
-          <img src={cinema1} className="md:-mt-5 md:w-20 xs:w-16" alt="" />
-          <img src={cinema2} className="md:w-24 xs:w-20" alt="" />
-          <img src={cinema3} className="md:w-20 xs:w-16" alt="" />
+        <div className="basis-auto mb-5 md:mb-0">
+          <p className="text-base font-bold mb-2 mb:mb-5 mt-7 md:mt-0">Follow us</p>
+          <div className="flex flex-row md:flex-col">
+            <div className="my-3 flex">
+              <i className="fa fa-facebook  box-content w-7 text-[#6E7192] me-5 md:me-0" aria-hidden="true" />
+              <Link className="hidden md:block text-sm tracking-wide text-[#6E7192]" to='/#'>Tickitz Cinema id</Link>
+            </div>
+            <div className="my-3 flex">
+              <i className="fa fa-instagram box-content w-7 text-[#6E7192] me-5 md:me-0" aria-hidden="true" />
+              <Link className="hidden md:block  text-sm tracking-wide text-[#6E7192]" to='/#'>tickitz.id</Link>
+            </div>
+            <div className="my-3 flex">
+              <i className="fa fa-twitter  box-content w-7 text-[#6E7192] me-5 md:me-0" aria-hidden="true" />
+              <Link className="hidden md:block  text-sm tracking-wide text-[#6E7192]" to='/#'>tickitz.id</Link>
+            </div>
+            <div className="my-3 flex">
+              <i className="fa fa-youtube-play box-content w-7 text-[#6E7192] me-5 md:me-0" aria-hidden="true" />
+              <Link className="hidden md:block text-sm tracking-wide text-[#6E7192]" to='/#'>Tickitz Cinema id</Link>
+            </div>
+          </div>
         </div>
-
-        <div className="footer-4 md:gap-y-3 mb-5 md:flex md:flex-col xs:flex xs:flex-row xs:flex-wrap xs:gap-x-5 xs:mt-5 xs:pb-5 xl:flex lg:mx-auto">
-          <div className="fu font-bold xs:w-full xs:mb-5">Follow Us</div>
-          <span className="fb flex flex-row gap-x-2 md:-mt-5">
-            <img src={fb} alt="" />
-            <p className="hidden md:flex md:text-xs md:items-center md:ps-2">
-              Tickitz Cinema Id
-            </p>
-          </span>
-          <span className="ig flex flex-row gap-x-2">
-            <img
-              src={ig}
-              className="md:w-5 xs:w-5"
-              alt=""
-            />
-            <p className="hidden md:flex md:text-xs md:items-center">
-              Tickitz Cinema Id
-            </p>
-          </span>
-          <span className="tw flex flex-row gap-x-2">
-            <img src={tw} alt="" />
-            <p className="hidden md:flex md:text-xs md:items-center">
-              Tickitz Cinema Id
-            </p>
-          </span>
-          <span className="yt flex flex-row gap-x-2">
-            <img
-              src={yt}
-              className="md:w-5 xs:w-5"
-              alt=""
-            />
-            <p className="hidden md:flex md:text-xs md:items-center">
-              Tickitz Cinema Id
-            </p>
-          </span>
-        </div>
-      </footer>
-      <p className="copyright md:pb-10 md:-mt-5 md:mb-5 text-center text-sm text-font bg-white xs:-mt-6 xs:pb-5">
-        © 2020 Tickitz. All Rights Reserved
-      </p>
-
-    </div>
+      </div>
+      <div className="md:text-center mt-5 mb-5 text-[#4E4B66] tracking-wide text-sm">© 2020 Tickitz. All Rights
+        Reerved.
+      </div>
+    </footer>
   )
 }
 
