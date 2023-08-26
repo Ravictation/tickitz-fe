@@ -103,19 +103,19 @@ function List_Movie() {
                         <div className="w-full mt-5">
                             <table className="w-full text-center">
                                 <tr className="text-[12px] font-semibold h-10">
-                                    <td className="">No</td>
-                                    <td className="">Tumbnail</td>
-                                    <td className="">Movie Name</td>
-                                    <td className="">Category</td>
-                                    <td className="">Release Date</td>
-                                    <td className="">Duration</td>
-                                    <td className="">Action</td>
+                                    <td>No</td>
+                                    <td>Tumbnail</td>
+                                    <td>Movie Name</td>
+                                    <td>Category</td>
+                                    <td>Release Date</td>
+                                    <td>Duration</td>
+                                    <td>Action</td>
                                 </tr>
                                 {
                                     movies ? (
                                         movies.map((v, i) => {
                                             return (
-                                                <tr className="text-[12px] font-semibold h-10 border-t">
+                                                <tr key={i} className="text-[12px] font-semibold h-10 border-t">
                                                     <td>{i + 1}</td>
                                                     <td className="flex justify-center">
                                                         <div className="h-[50px] w-[50px] my-2">
@@ -128,13 +128,13 @@ function List_Movie() {
                                                     <td>{v.duration_hour + " hour " + v.duration_minute + " minute"}</td>
                                                     <td>
                                                         <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-primary text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
-                                                            <i class="fa fa-eye text-white" aria-hidden="true"></i>
+                                                            <i className="fa fa-eye text-white" aria-hidden="true"></i>
                                                         </Link>
                                                         <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#5D5FEF] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
-                                                            <i class="fa fa-pencil text-white" aria-hidden="true"></i>
+                                                            <i className="fa fa-pencil text-white" aria-hidden="true"></i>
                                                         </Link>
                                                         <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#ED2E7E] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
-                                                            <i class="fa fa-trash text-white" aria-hidden="true"></i>
+                                                            <i className="fa fa-trash text-white" aria-hidden="true"></i>
                                                         </Link>
                                                     </td>
                                                 </tr>
