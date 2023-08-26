@@ -7,7 +7,7 @@ import History from "./page/history"
 import Admin from "./page/admin";
 import Signin from "./page/signin";
 import Detail from "./page/detail";
-
+import Profile from "./page/profile";
 
 function Router(){
     return (
@@ -21,7 +21,7 @@ function Router(){
             <Route path="/movie/detail" element={<Detail/>}/>
             <Route path="/admin" element={<Admin/>}/>
             <Route path="/sign-in" element={<Signin/>}/>
-            
+            <Route path="/profile" element={<Profile/>}/>
         </Routes>
         </BrowserRouter>
     )

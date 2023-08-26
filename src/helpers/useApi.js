@@ -6,7 +6,7 @@ function useApi (url=''){
     const {token} = useSelector((s)=>s.users)
 
     const [request, setRequest] = useState({
-        baseURL: 'localhost:8081' || url,
+        baseURL: 'http://localhost:8081' || url,
         headers:{
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
@@ -29,7 +29,7 @@ function useApi (url=''){
 function useApiMulti (url=''){
     const {token}=useSelector((s)=>s.users)
     const [request, setRequest]=useState({
-        baseURL: 'localhost:8081' || url,
+        baseURL: 'http://localhost:8081' || url,
         headers:{
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
