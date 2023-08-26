@@ -14,7 +14,9 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
   const [header_search, setheader_search] = useState(true)
   const [menu_desktop, setmenu_desktop] = useState(true)
   const [menu_mobile, setmenu_mobile] = useState(true)
+  const [menu_location, setmenu_location] = useState(true)
   const [modal_logout, setmodal_logout] = useState(true)
+  const [location, setlocation] = useState("Location")
 
   const btnlogout = () => {
     dispatch(logout())
@@ -40,6 +42,14 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
     setheader_search(true)
     setmenu_desktop(menu_desktop ? false : true)
   }
+
+  const click_location = () => {
+    seticon_search(true)
+    setheader_search(true)
+    setmenu_desktop(true)
+    setmenu_location(menu_location ? false : true)
+  }
+
   const click_menu_mobile = () => {
     seticon_search(true)
     setheader_search(true)
@@ -72,6 +82,8 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
     <header className="sticky top-0 px-5 md:px-20 relative flex justify-between py-4 bg-white z-10 md:shadow-sm">
       <nav className="flex items-center">
         <img className="h-8 md:h-10 lg:h-14 pe-10" src={logo} alt="" />
+      </nav>
+      <div className="flex items-center">
         {
           isAuth ? (
             data && data.role == 'admin' ? (
@@ -96,11 +108,15 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
             </>
           )
         }
-      </nav>
+      </div>
       <div className={isAuth ? "hidden" : "block"}>
         <button onClick={() => { navigates(`/sign-in`) }} className="mt-2 h-6 w-16 md:h-8 md:w-20 bg-[#5F2EEA] rounded-md text-[10px] md:text-[12px] tracking-wide text-white">Sign Up</button>
       </div>
       <div className={isAuth ? "flex items-center" : "hidden"}>
+        <div className="flex">
+          <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide mr-3" to="/#">{location}</Link>
+          <i onClick={click_location} className="fa fa-sort-desc right-0 top-[10px] w-5 h-5 mr-7" aria-hidden="true" />
+        </div>
         <Link to="/#" onClick={show_header_search} className={icon_search ? 'hidden lg:block pe-8' : 'hidden'}>
           <i className="fa fa-search text-[#414141]" aria-hidden="true" />
         </Link>
@@ -113,6 +129,12 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
         </Link>
         <Link className="block lg:hidden" onClick={click_menu_mobile}><i className="fa fa-bars" style={{ maxWidth: '200px' }} aria-hidden="true" /></Link>
       </div>
+
+      <div className={menu_location ? "hidden" : "hidden lg:grid absolute bg-white rounded shadow-md right-56 top-[4.5rem]"}>
+        <Link onClick={() => setlocation("Indonesia")} className="px-3 tracking-wide font-normal hover:font-bold">Indonesia</Link>
+        <Link onClick={() => setlocation("Singapore")} className="px-3 tracking-wide font-normal hover:font-bold">Singapore</Link>
+      </div>
+
       <div className={menu_desktop ? "hidden" : "hidden lg:grid absolute bg-white rounded shadow-md right-24 top-[4.5rem]"}>
         <p className="px-3 py-2 tracking-wide font-normal border-b">{data ? data.first_name != "" && data.last_name != "" ? capital(data.first_name + ' ' + data.last_name) : "No Name" : 'Guest'}</p>
         <Link className="px-3 tracking-wide font-normal hover:font-bold" to="/profile">Profile</Link>

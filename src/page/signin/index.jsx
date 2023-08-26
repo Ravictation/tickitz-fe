@@ -36,6 +36,11 @@ function Signin() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const [cpass, setcpass] = useState(true)
+  const click_pass = () => {
+    setcpass(cpass == true ? false : true)
+  }
+
   const Login = async () => {
     if (validateForm()) {
       try {
@@ -73,14 +78,13 @@ function Signin() {
             <div className="flex flex-col gap-y-5">
               <img className="w-60 object-cover rounded-full" src={welcome} />
               <p className="text-[#A0A3BD] text-xl tracking-tight">Sign in with your data that you entered during<br />your registration</p>
-              {/* <form onSubmit={Login} className="flex flex-col gap-y-5"> */}
               <div>
                 <p>Email</p>
                 <input
                   type="text"
                   name="email_user"
                   placeholder="enter your email"
-                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2 focus:outline-none"
                   onChange={inputChange}
                 />
                 {errors.email_user && (
@@ -89,13 +93,16 @@ function Signin() {
               </div>
               <div>
                 <p>Password</p>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="enter your password"
-                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                  onChange={inputChange}
-                />
+                <div className="relative w-full items-center">
+                  <input
+                    type={cpass ? "password" : "text"}
+                    name="password"
+                    placeholder="enter your password"
+                    className="border-2 w-full px-3 py-3 rounded-md mt-2 focus:outline-none"
+                    onChange={inputChange}
+                  />
+                  <Link onClick={click_pass}><i className="fa fa-eye absolute top-7 md:top-[1.5rem] right-3 text-[#A0A3BD]" aria-hidden="true"></i></Link>
+                </div>
                 {errors.password && (
                   <p className="text-red-500">{errors.password}</p>
                 )}

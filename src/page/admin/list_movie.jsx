@@ -97,7 +97,7 @@ function List_Movie() {
                         <div className="w-full mt-5">
                             <table className="w-full text-center">
                                 <tr className="text-[12px] font-semibold h-10">
-                                    <td className="w-auto">No</td>
+                                    <td className="">No</td>
                                     <td className="">Tumbnail</td>
                                     <td className="">Movie Name</td>
                                     <td className="">Category</td>

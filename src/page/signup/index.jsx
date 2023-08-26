@@ -38,6 +38,11 @@ function Signup() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const [cpass, setcpass] = useState(true)
+  const click_pass = () => {
+    setcpass(cpass == true ? false : true)
+  }
+
   const Register = async (e) => {
     e.preventDefault();
     if (validateForm() && isChecked) {
@@ -85,7 +90,7 @@ function Signup() {
                   type="text"
                   name="email_user"
                   placeholder="enter your email"
-                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2 focus:outline-none"
                   onChange={inputChange}
                 />
                 {errors.email_user && (
@@ -94,13 +99,16 @@ function Signup() {
               </div>
               <div>
                 <p>Password</p>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="enter your password"
-                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                  onChange={inputChange}
-                />
+                <div className="relative w-full items-center">
+                  <input
+                    type={cpass ? "password" : "text"}
+                    name="password"
+                    placeholder="enter your password"
+                    className="border-2 w-full px-3 py-3 rounded-md mt-2 focus:outline-none"
+                    onChange={inputChange}
+                  />
+                  <Link onClick={click_pass}><i className="fa fa-eye absolute top-7 md:top-[1.5rem] right-3 text-[#A0A3BD]" aria-hidden="true"></i></Link>
+                </div>
                 {errors.password && (
                   <p className="text-red-500">{errors.password}</p>
                 )}
