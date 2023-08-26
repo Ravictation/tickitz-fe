@@ -9,7 +9,6 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
   const navigates = useNavigate();
   const dispatch = useDispatch()
   const { isAuth, data } = useSelector((s) => s.users)
-  console.log(isAuth)
   const [icon_search, seticon_search] = useState(true)
   const [header_search, setheader_search] = useState(true)
   const [menu_desktop, setmenu_desktop] = useState(true)
