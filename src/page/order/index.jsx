@@ -10,17 +10,37 @@ import lovenest from "../../assets/seatlove.png"
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { confirmationdetails, confirmationseats } from "../../store/reducer/user";
 function Order () {
+    const dispatch = useDispatch()
     const params = useParams()
     const navigate = useNavigate
     const [details, setDetails] = useState([])
     const [image, setImage] = useState('')
+    const [storeData, setStoreData] = useState({})
+    const { seats, title, premiere, date, time, tickets } = useSelector ((s) => s.users)
+
+    const inputChange = (e) => {
+        const data = {...storeData}
+        data[e.target.name] = e.target.value
+        setStoreData(data)
+       
+      }
     const getMovies = async () => {
         try {
             const {data} = await axios.get('http://localhost:8081/times_schedules/' + params.id)
             setDetails(data.data[0])
             setImage(data.data[0].image_premier)
+            dispatch(
+                confirmationdetails({
+                  title: data.data[0].title,
+                  premiere: data.data[0].name_premier,
+                  date: data.data[0].set_date,
+                  time: data.data[0].time_schedule,
+                  scheduleid: data.data[0].id_time_schedule
+                })
+              );
         } catch (error) {
             console.log(error)
         }
@@ -28,6 +48,10 @@ function Order () {
     useEffect(()=>{
         getMovies()
       }, [])
+ 
+      const handleContinue = () => {
+        dispatch(confirmationseats(storeData))
+      }
     return(
         <>
         <Navbar/>
@@ -93,7 +117,7 @@ function Order () {
                     </div>
                     <div className="flex flex-row justify-between mx-5">
                         <p>Seat Choosed</p>
-                        <p>C4, C5, C6</p>
+                        <input type="text" className="border border-gray-300 py-2 px-5 rounded-lg" placeholder="input your seats" name="seats" onChange={inputChange}/>
                     </div>
                     <hr className="my-3 border-gray-300" />
 
@@ -102,7 +126,7 @@ function Order () {
                        <h1 className="font-bold text-xl text-blue-600">$30</h1>
                     </div>
                 </div>
-                <Link to="/payment" className="block bg-blue-600 w-full py-5 text-white mt-10 rounded-lg text-center">Checkout Now</Link>
+                <Link to="/payment" className="block bg-blue-600 w-full py-5 text-white mt-10 rounded-lg text-center" onClick={handleContinue}>Checkout Now</Link>
             </div>
             
             

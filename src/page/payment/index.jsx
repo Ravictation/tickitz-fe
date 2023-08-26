@@ -4,16 +4,21 @@ import Footer from "../../component/footer";
 import Googlepay from "../../assets/logos_google-pay.png"
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import useApi from "../../helpers/useApi";
+import { Show } from "../../helpers/toast";
+import { useNavigate } from "react-router-dom";
 
 function Payment(){
     const { data } = useSelector ((s) => s.users)
+    const navigate = useNavigate()
+    const api = useApi()
     console.log(data)
     const generateVirtualAccount = () => {
         const randomNumbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 10));
         const virtualAccountNumber = randomNumbers.join("");
         return virtualAccountNumber;
       };
-    
+    const {seats, scheduleid} = useSelector ((s)=> s.users)
       const virtualAccount = generateVirtualAccount();
       const copyToClipboard = () => {
         navigator.clipboard.writeText(virtualAccount)
@@ -24,6 +29,31 @@ function Payment(){
             console.error("Error copying to clipboard:", error);
           });
       };
+      const purchase = async () => {
+        try {
+          const response = await api({
+            method: 'post',
+            url: `/bookings`,
+            data: {
+              seats: seats,
+              id_time_schedule: scheduleid
+            }
+          });
+      
+          if (response.status === 200) {
+            Show('Purchase Ticket Success', 'success');
+            setTimeout(() => {
+              navigate('/success/tickets');
+            }, 3000);
+          } else {
+            Show('Purchase Ticket Failed', 'error');
+          }
+        } catch (error) {
+          Show('An error occurred', 'error');
+        }
+      };
+      
+    
     return(
         <>
         <Navbar/>
@@ -116,7 +146,7 @@ function Payment(){
              </div>
              <p>Pay this payment bill before it is due, <span className="text-red-400">on June 23, 2023</span>. If the bill has not been paid by the specified time, it will be forfeited</p>
             
-             <Link to="/success/tickets" className="btn text-white w-full bg-blue-700 mt-5">Check Payment</Link>
+             <div className="btn text-white w-full bg-blue-700 mt-5" onClick={purchase}>Check Payment</div>
              <div className="text-center mt-3">
             <Link to="/" className="text-blue-700 text-xl">
                 Pay Later

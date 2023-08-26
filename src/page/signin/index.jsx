@@ -38,7 +38,7 @@ function Signin() {
     if (validateForm()) {
         try {
             const response = await axios.post("http://localhost:8081/auth/login", form);
-            const data = response.data; // Dapatkan data dari respons
+            const data = response.data; 
             console.log("Login Berhasil", data);
             Show("Login Success", "success");
             console.log(data)
