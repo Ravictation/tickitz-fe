@@ -79,48 +79,47 @@ function Signup() {
                 <li className="step">Activate</li>
                 <li className="step">Done</li>
               </ul>
-              <form onSubmit={Register} className="flex flex-col gap-y-5">
-                <div>
-                  <p>Email</p>
-                  <input
-                    type="text"
-                    name="email_user"
-                    placeholder="enter your email"
-                    className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                    onChange={inputChange}
-                  />
-                  {errors.email_user && (
-                    <p className="text-red-500">{errors.email_user}</p>
-                  )}
-                </div>
-                <div>
-                  <p>Password</p>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="enter your password"
-                    className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                    onChange={inputChange}
-                  />
-                  {errors.password && (
-                    <p className="text-red-500">{errors.password}</p>
-                  )}
-                </div>
-                <div className="flex flex-row gap-x-5">
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    className="checkbox"
-                    onChange={checkboxChange}
-                  />
-                  <p>I agree to terms & conditions</p>
-                </div>
-                <button type="submit"
-                  className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center rounded-md mt-2"
-                >
-                  Join For Free Now
-                </button>
-              </form>
+              <div>
+                <p>Email</p>
+                <input
+                  type="text"
+                  name="email_user"
+                  placeholder="enter your email"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  onChange={inputChange}
+                />
+                {errors.email_user && (
+                  <p className="text-red-500">{errors.email_user}</p>
+                )}
+              </div>
+              <div>
+                <p>Password</p>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="enter your password"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  onChange={inputChange}
+                />
+                {errors.password && (
+                  <p className="text-red-500">{errors.password}</p>
+                )}
+              </div>
+              <div className="flex flex-row gap-x-5">
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  className="checkbox"
+                  onChange={checkboxChange}
+                />
+                <p>I agree to terms & conditions</p>
+              </div>
+              <div
+                className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center rounded-md mt-2"
+                onClick={Register}
+              >
+                Join For Free Now
+              </div>
               <p className="text-center">
                 already have an account?{" "}
                 <Link to="/sign-in" className="text-blue-500 cursor-pointer">

@@ -36,8 +36,7 @@ function Signin() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const Login = async (e) => {
-    e.preventDefault();
+  const Login = async () => {
     if (validateForm()) {
       try {
         const response = await axios.post("http://localhost:8081/auth/login", form);
@@ -74,42 +73,43 @@ function Signin() {
             <div className="flex flex-col gap-y-5">
               <img className="w-60 object-cover rounded-full" src={welcome} />
               <p className="text-[#A0A3BD] text-xl tracking-tight">Sign in with your data that you entered during<br />your registration</p>
-              <form onSubmit={Login} className="flex flex-col gap-y-5">
-                <div>
-                  <p>Email</p>
-                  <input
-                    type="text"
-                    name="email_user"
-                    placeholder="enter your email"
-                    className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                    onChange={inputChange}
-                  />
-                  {errors.email_user && (
-                    <p className="text-red-500">{errors.email_user}</p>
-                  )}
-                </div>
-                <div>
-                  <p>Password</p>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="enter your password"
-                    className="border-2 w-full px-3 py-3 rounded-md mt-2"
-                    onChange={inputChange}
-                  />
-                  {errors.password && (
-                    <p className="text-red-500">{errors.password}</p>
-                  )}
-                </div>
-                <Link to="/" className="text-right text-blue-500 font-semibold">
-                  Forgot Your Password?{" "}
-                </Link>
-                <button type="submit"
-                  className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center rounded-md mt-2"
-                >
-                  Login
-                </button>
-              </form>
+              {/* <form onSubmit={Login} className="flex flex-col gap-y-5"> */}
+              <div>
+                <p>Email</p>
+                <input
+                  type="text"
+                  name="email_user"
+                  placeholder="enter your email"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  onChange={inputChange}
+                />
+                {errors.email_user && (
+                  <p className="text-red-500">{errors.email_user}</p>
+                )}
+              </div>
+              <div>
+                <p>Password</p>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="enter your password"
+                  className="border-2 w-full px-3 py-3 rounded-md mt-2"
+                  onChange={inputChange}
+                />
+                {errors.password && (
+                  <p className="text-red-500">{errors.password}</p>
+                )}
+              </div>
+              <Link to="/" className="text-right text-blue-500 font-semibold">
+                Forgot Your Password?{" "}
+              </Link>
+              <div
+                className="px-2 py-3 cursor-pointer bg-blue-500 block text-white text-center rounded-md mt-2"
+                onClick={Login}
+              >
+                Login
+              </div>
+              {/* </form> */}
               <h1 className="border-b leading-[0.1rem] border-[#DEDEDE] text-center my-5">
                 <span className="bg-white text-center"><Link className="p-5 text-[#AAAAAA] font-semibold text-md">or</Link></span>
               </h1>
