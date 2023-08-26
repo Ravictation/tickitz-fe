@@ -8,7 +8,6 @@ import { logout } from "../store/reducer/user";
 const Navbar = () =>{
     const dispatch = useDispatch()
     const {isAuth, data} = useSelector((s)=>s.users)
-
     const [isOpen, setIsOpen] = useState(false)
     return(
         // <section className="px-10">
@@ -60,7 +59,7 @@ const Navbar = () =>{
                         </button>
                       </div>
                     
-                      {data[0] && data[0].roles == 'admin' ? (
+                      {data.role == 'admin' ? (
                         <div className="md-menu  md:flex md:flex-row md:gap-x-7">
                           <Link to="/">Home</Link>
                           <Link to="/admin">Manage Movie</Link>

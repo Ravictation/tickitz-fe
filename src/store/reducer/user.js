@@ -47,9 +47,16 @@ const userSlice = createSlice({
                 tickets: actions.payload.tickets,
                 price: actions.payload.price
             }
+        },
+        addData(state, actions) {
+            return {
+                ...state,
+                data: actions.payload
+
+            }
         }
     }
 })
 
-export const {login, logout, confirmationdate, confirmationseats}=userSlice.actions
+export const {login, logout, confirmationdate, confirmationseats, addData}=userSlice.actions
 export default userSlice.reducer

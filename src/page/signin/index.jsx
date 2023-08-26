@@ -3,14 +3,16 @@ import background from "../../assets/background.png";
 import signup from "../../assets/signup.png";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Show } from "../../helpers/toast";
+import { login } from "../../store/reducer/user"
 
 function Signin() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const {isAuth} = useSelector((s) => s.users)
+  const dispatch = useDispatch()
 
 
   const inputChange = (e) => {
@@ -35,19 +37,24 @@ function Signin() {
   const Login = async () => {
     if (validateForm()) {
         try {
-          const response = await axios.post("http://localhost:8081/auth/login", form);
-          console.log("Registrasi Berhasil", response.data);
-          Show("Login Success", "success");
-  
-          setTimeout(() => {
+            const response = await axios.post("http://localhost:8081/auth/login", form);
+            const data = response.data; // Dapatkan data dari respons
+            console.log("Login Berhasil", data);
+            Show("Login Success", "success");
+            console.log(data)
+            const token = data.data;
+            dispatch( login(token));        
+            setTimeout(() => {
             navigate("/");
-          }, 3000);
+                }, 3000);
+    
         } catch (error) {
-          console.error(error.message);
+            console.error(error.message);
         }
-      } 
-    };
-
+    } else {
+        Show("wrong password", "error")
+    }
+};
   return (
     <>
       <div className="h-screen flex justify-center items-center">

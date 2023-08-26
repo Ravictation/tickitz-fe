@@ -6,7 +6,7 @@ import Tickets from "./page/tickets";
 import History from "./page/history"
 import Admin from "./page/admin";
 import Signin from "./page/signin";
-import Detail from "./page/details";
+import Detail from "./page/detail";
 
 
 function Router(){

@@ -6,24 +6,42 @@ import BgSubscribe from '../../component/bgsubscribe'
 import useApi from '../../helpers/useApi'
 import CardMovie from "../../component/card";
 
-function Home(){
-    const [movies, setMovies] = useState([])
-    //const [genres, setGenres] = useState([])
-    const api = useApi()
+import { useSelector, useDispatch } from 'react-redux';
+import { addData } from '../../store/reducer/user';
 
-    const getMovies = async() =>{
+function Home() {
+    const [movies, setMovies] = useState([]);
+    const api = useApi();
+    const dispatch = useDispatch();
+    const { isAuth } = useSelector((s) => s.users);
+
+    const getMovies = async () => {
         try {
-            const {data} = await api(`http://localhost:5200/movie/all`)
-            console.log(data)
-            setMovies(data.data)
+            const { data } = await api('http://localhost:5200/movie/all');
+            console.log(data);
+            setMovies(data.data);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
-    useEffect(()=>{
-        getMovies()
-    },[])
+    const fetchUser = async () => {
+        try {
+            const { data } = await api.get('http://localhost:8081/user/');
+            dispatch(addData(data.data));
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getMovies();
+
+        if (isAuth) {
+            fetchUser();
+        }
+    }, [isAuth]);
 
     return(
        <>
