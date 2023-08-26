@@ -5,6 +5,7 @@ import Order from "./page/order"
 import Tickets from "./page/tickets";
 import History from "./page/history"
 import Admin from "./page/admin";
+import Signin from "./page/signin";
 
 
 function Router(){
@@ -17,6 +18,8 @@ function Router(){
             <Route path="/success/tickets" element={<Tickets/>}/>
             <Route path="/profile/history" element={<History/>}/>
             <Route path="/admin" element={<Admin/>}/>
+            <Route path="/sign-in" element={<Signin/>}/>
+            
         </Routes>
         </BrowserRouter>
     )
