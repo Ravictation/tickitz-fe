@@ -105,11 +105,6 @@ function Home() {
     return (
         <>
             <Navbar />
-            {/** 
-            <div className='w-full max-h-[400px]'>
-                <ImageSlide slide={slides}/>
-            </div>
-    */}
             <ImageSlide/>
 
             <section className="main-section px-20 mt-20">
