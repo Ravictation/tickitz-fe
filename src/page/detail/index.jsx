@@ -61,6 +61,7 @@ function Detail() {
                 setmeta_Sch(data.meta)
             })
             .catch((err) => {
+                setmeta_Sch(false)
                 console.log(err)
             })
     }
@@ -172,7 +173,7 @@ function Detail() {
                 <div className="Choose-Cinema mt-5 lg:px-20">
                     <div className="text-cinema flex xs:flex-col lg:flex-row xs:w-full lg:w-1/4 justify-between">
                         <p className="font-semibold hidden lg:flex">Choose Cinema</p>
-                        <p className="text-font xs:text-center lg:text-normal">{meta_sch.total_data} Result</p>
+                        <p className="text-font xs:text-center lg:text-normal">{meta_sch.total_data > 0 ? meta_sch.total_data : 0} Result</p>
                     </div>
 
                     <div className="flex xs:flex-col xs:gap-y-5 lg:gap-x-3 md:px-16 lg:gap-y-0 xs:px-10 lg:px-0 lg:flex-row mt-5 w-full justify-between">
@@ -213,14 +214,21 @@ function Detail() {
                 </div>
 
                 <div className="flex pt-10 justify-around">
-                    <Pagination meta={meta_sch} page_active={pageactive} set_page_active={setpageactive} />
-                </div>
+                    {meta_sch ?
+                        <Pagination meta={meta_sch} page_active={pageactive} set_page_active={setpageactive} />
+                        : (
+                            <div className="mb-20">Data Not Found</div>
+                        )}
 
-                <button className="w-full flex justify-center items-center my-10" onClick={() => navigate(`/order/${pickSch}`)}>
-                    <div className="text-white bg-button px-5 py-3 rounded-md">
-                        Book Now
-                    </div>
-                </button>
+                </div>
+                {meta_sch ?
+                    <button className="w-full flex justify-center items-center my-10" onClick={() => navigate(`/order/${pickSch}`)}>
+                        <div className="text-white bg-button px-5 py-3 rounded-md">
+                            Book Now
+                        </div>
+                    </button>
+                    : ""
+                }
 
             </div>
 
