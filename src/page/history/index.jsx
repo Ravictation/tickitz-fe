@@ -35,8 +35,8 @@ function History () {
                 url: "/bookings/user"
             });
             const data = response.data;
-            setBooking(data);
-            console.log(data);
+            setBooking(data.data);
+            console.log(data.data);
         } catch (error) {
             console.log(error);
         }
@@ -98,7 +98,7 @@ useEffect(() =>{
               <input
                 type="file"
                 name="image_user"
-                onChange={handleImageChange} // Make sure to define handleImageChange function
+                onChange={handleImageChange} 
                 ref={inputRef}
                 style={{ display: "none" }}
               />
@@ -117,19 +117,19 @@ useEffect(() =>{
             <Link to="/profile/history">Order History</Link>
           </div>
           {booking.length > 0 ? (
-            booking.map((v) => (
-              <Ticketscard
-                premier={v.data[0].schedule[0].image_premier}
-                title={v.data[0].title}
-                date={v.data[0].schedule[0].set_date}
-                time={v.data[0].time_schedule}
-                seats={v.data[0].seats}
-                total={v.data[0].total}
-              />
-            ))
-          ) : (
-            <h1>Data Not Found</h1>
-          )}
+         booking.map((v) => (
+            <Ticketscard
+      premier={v.schedule[0].image_premier}
+      title={v.seats}
+      date={v.seats}
+      time={v.seats}
+      seats={v.seats}
+      total={v.total}
+    />
+     ))
+    ) : (
+    <h1>Data Not Found</h1>
+        )}
         </div>
       </main>
       <Footer />
