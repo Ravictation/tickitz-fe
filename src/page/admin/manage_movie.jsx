@@ -9,6 +9,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { logout } from '../../store/reducer/user'
 import moment from "moment/moment";
 import Select from "react-select";
+import { Show } from "../../helpers/toast";
 
 function Manage_Movie() {
     const params = useParams()
@@ -32,7 +33,7 @@ function Manage_Movie() {
             setdirector(data.data);
         } catch (error) {
             setdirector(false);
-            console.log(error.response.data);
+            // console.log(error.response.data);
         }
     };
     const getCategory = async () => {
@@ -43,7 +44,7 @@ function Manage_Movie() {
             setgenre(data.data);
         } catch (error) {
             setgenre(false);
-            console.log(error.response.data);
+            // console.log(error.response.data);
         }
     };
     const getCast = async () => {
@@ -54,7 +55,7 @@ function Manage_Movie() {
             setcast(data.data);
         } catch (error) {
             setcast(false);
-            console.log(error.response.data);
+            // console.log(error.response.data);
         }
     };
 
@@ -66,7 +67,7 @@ function Manage_Movie() {
             setpremier(data.data);
         } catch (error) {
             setpremier(false);
-            console.log(error.response.data);
+            // console.log(error.response.data);
         }
     };
 
@@ -119,7 +120,7 @@ function Manage_Movie() {
                 if (counts == 0) {
                     pick_times.push(time)
                 } else {
-                    console.log("time is already")
+                    Show("time is already", "error");
                 }
             } else {
                 pick_times.push(time)
@@ -167,7 +168,7 @@ function Manage_Movie() {
 
             } catch (error) {
                 setmovie(false);
-                console.log(error.response.data);
+                // console.log(error.response.data);
             }
         }
     };
@@ -201,7 +202,7 @@ function Manage_Movie() {
                 settimes(times_u)
             } catch (error) {
                 setmovie_details(false);
-                console.log(error.response.data);
+                // console.log(error.response.data);
             }
         }
     };
@@ -261,13 +262,14 @@ function Manage_Movie() {
                     }
                 });
             }
-            console.log(data.data);
+            Show(data.data.description, "success");
+            navigates("/list_movie");
         } catch (error) {
+            Show(error.response.data.description, "error");
             if (error.response.data.status == 401) {
                 dispatch(logout())
                 navigates(`/sign-in`)
             }
-            console.log(error.response.data);
         }
     };
 
@@ -312,13 +314,13 @@ function Manage_Movie() {
             <Navbar />
             <section className='bg-background py-5 flex justify-center'>
                 <div className="grid grid-row-3 bg-white rounded-md py-5 w-4/5 md:w-3/6 p-5">
-                    <h1 className="font-[#14142B] font-semibold text-xl">Add Movie</h1>
+                    <h1 className="font-[#14142B] font-semibold text-xl">{params.id == "add" ? "Add Movie" : "Update Movie"}</h1>
                     <div className="grid grid-cols-1 grid-rows-[350px_1fr]">
-                        <div className="flex justify-around">
+                        <div className="flex justify-around my-4">
                             <div className="w-48 m-5 md:m-0 p-5 border rounded-xl">
                                 <Link id="file" onClick={() => { imgRef.current.showPicker(); }} >
                                     <img
-                                        className="h-full object-cover rounded-xl my-4"
+                                        className="h-full object-cover rounded-xl"
                                         src={
                                             imagereader == ""
                                                 ? image == ""
@@ -614,7 +616,7 @@ function Manage_Movie() {
                                     times ?
                                         times.map((v) => {
                                             return (
-                                                <div className="h-12 flex items-center">
+                                                <div key={v} className="h-12 flex items-center">
                                                     <button onClick={() => setdeltime(v)}>
                                                         <h1 className="hover:text-primary hover:font-bold">{v}WIB</h1>
                                                     </button>
@@ -633,7 +635,7 @@ function Manage_Movie() {
                                 onClick={insert_data}
                                 className="mt-3 h-10 w-40 rounded text-white bg-[#5F2EEA] text-sm font-semibold leading-none hover:bg-[#2A00A2] active:bg-[#2A00A2]"
                             >
-                                Submit
+                                {params.id == "add" ? "Submit" : "Update"}
                             </button>
                         </div>
                     </div>
