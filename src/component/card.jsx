@@ -24,7 +24,7 @@ const navigate = useNavigate()
                 </div>
 
                 <div className="body-card mt-2">
-                <h6 className="text-md mb-3 tracking-wide font-semibold">{name}</h6>
+                <h6 className="text-md mb-3 tracking-wide font-semibold">{name.length < 4  ? name : name.substring(0,9) + "..." }</h6>
                 <div className="flex flex-row">
                 {genre ? 
                     genre.map((v, index)=> {

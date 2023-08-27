@@ -5,7 +5,7 @@ import Footer from "../../component/footer";
 import BgSubscribe from '../../component/bgsubscribe'
 import useApi from '../../helpers/useApi'
 import CardMovie from "../../component/card";
-import {Show} from '../../helpers/toast'
+import Pagination from '../../component/pagination'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addData } from '../../store/reducer/user';
@@ -15,24 +15,28 @@ function Home() {
     const [genres, setGenres] = useState([])
     const [filterGenre, setFilterGenre] = useState('')
     const [filterSearch, setFilterSearch] = useState([])
-    const [page, setPage] = useState(1)
+    const [pageActive, setPageActive] = useState(1)
+    const [metaMovies, setMetaMovies] = useState([])
     const api = useApi();
-    const limit = 5
+    const limit = 2
     const dispatch = useDispatch();
     const { isAuth } = useSelector((s) => s.users);
+
 
     const getMovies = async()=>{
         api({
             method : 'GET',
-            url : `/movies?page=${page}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}` ,
+            url : `/movies?page=${pageActive}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}` ,
             data: movies    
         }) 
             .then(({data})=>{
                 setMovies(data.data)
+                setMetaMovies(data.meta)
                 console.log(data.data)
             })
             .catch((err)=>{
                 setMovies(false)
+                setMetaMovies(false)
                 console.log(err)
         })
     }
@@ -78,9 +82,16 @@ function Home() {
         getGenre()
     },[limit])
 
+
+
     useEffect(()=>{
         getMovies()
-    },[filterSearch, filterGenre])
+    },[pageActive, filterSearch, filterGenre])
+
+    useEffect(()=>{
+        setPageActive(1)
+        getMovies()
+    },[])
 
     return (
         <>
@@ -88,11 +99,11 @@ function Home() {
             <ImageSlide />
 
             <section className="main-section px-20 mt-20">
-                <div className="hidden lg:flex genre-search-movie w-full">
-                    <div className="w-2/6">
+                <div className="flex xs:flex-col lg:flex-row xs:gap-y-5 lg:gap-y-0 genre-search-movie w-full">
+                    <div className="lg:w-2/6 xs:w-full">
                         <label>Cari Event</label>
-                        <form className="w-full mt-3 flex border border-gray p-3 gap-x-5 rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <form className="w-full mt-3 flex border border-gray p-3 sm:gap-x-5 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="lg:w-6 lg:h-6 sm:w-5 sm:h-5 xs:hidden sm:flex">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
 
@@ -105,8 +116,9 @@ function Home() {
                         </form>
                     </div>
 
-                    <div className="filter-genre w-3/5 lg:mt-8">
-                    <div className="p-2 px-3 flex flex-row gap-x-5">
+                    <div className="filter-genre lg:w-3/5 xs:w-full">
+                    <label className="lg:ms-6">Filter</label>
+                    <div className="p-2 px-3 flex flex-row lg:gap-x-5 lg:mt-2 md:-ms-6 lg:ms-0 xs:overflow-x-scroll md:overflow-x-hidden">
                         {genres ?
                             genres.map((v)=>{
                                 return (
@@ -121,7 +133,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="p-5 flex flex-wrap gap-x-5">
+                <div className="p-5 flex flex-wrap gap-x-5 xs:gap-y-5 lg:gap-y-0 xs:justify-center md:justify-normal">
                     {movies ? (
                         movies.map((v) => {
                             return <CardMovie id={v.id_movie} image={v.image} name={v.title} genre={v.genres} />
@@ -135,26 +147,14 @@ function Home() {
 
 
 
-            <div className="w-full pagination flex ">
-                <div className="flex mx-auto gap-x-5">
-                    <div className="border rounded-full p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
-                        </svg>
-                    </div>
-
-                    <div className="border rounded-full p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                        </svg>
-                    </div>
-                </div>
+            <div className="w-full pagination flex justify-center">
+                    <Pagination meta={metaMovies} page_active={pageActive} set_page_active={setPageActive}/>
             </div>
-            {/**
+            
        <div className="subscribe px-20 mt-10">
             <BgSubscribe/>
        </div>
-    */}
+    
             <Footer />
         </>
     )
