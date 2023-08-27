@@ -207,9 +207,7 @@ function Detail() {
                                         </div>
                                     </div>
                                 )
-                            }) : (
-                                <div>Data Not Found</div>
-                            )}
+                            }) : ""}
 
                     </div>
                 </div>
