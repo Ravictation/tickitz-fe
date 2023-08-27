@@ -5,12 +5,15 @@ import background from "../../assets/background.png"
 import tickitz from "../../assets/tickitz 1.png"
 import tiket from "../../assets/Ticket.png"
 import Ticketscard from "../../component/tickets";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../helpers/useApi";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function Tickets() {
     const params = useParams()
+    const { isAuth } = useSelector((s)=>s.users)
+    const navigate = useNavigate()
     const api = useApi()
     const [details, setDetails] = useState([])
     const [schedule, setSchedule] = useState('')
@@ -32,6 +35,9 @@ function Tickets() {
     };
     useEffect(() => {
         getMovies();
+        if(!isAuth){
+            navigate('/')
+        }
     }, []);
     
     return(

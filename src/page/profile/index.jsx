@@ -83,6 +83,11 @@ function Profile() {
             fetchUser();
         }
     }, [isAuth]);
+    useEffect(() => {
+        if(!isAuth){
+            navigate('/')
+    }
+},[])
     return(
         <>
         <Navbar/>

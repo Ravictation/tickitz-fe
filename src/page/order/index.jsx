@@ -27,7 +27,6 @@ function Order () {
         const data = {...storeData}
         data[e.target.name] = e.target.value
         setStoreData(data)
-       
       }
     const getMovies = async () => {
         try {

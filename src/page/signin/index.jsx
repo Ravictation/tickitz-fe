@@ -48,7 +48,6 @@ function Signin() {
         const data = response.data; // Dapatkan data dari respons
         console.log("Login Berhasil", data);
         Show("Login Success", "success");
-        console.log(data)
         const token = data.data;
         dispatch(login(token));
         setTimeout(() => {
