@@ -65,7 +65,6 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
     seticon_search(true)
     setheader_search(true)
     setmodal_logout(true)
-    modal_logout_profile(false)
   }
 
   useEffect(() => {
