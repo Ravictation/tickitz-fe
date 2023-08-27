@@ -61,6 +61,7 @@ function Detail() {
                 setmeta_Sch(data.meta)
             })
             .catch((err) => {
+                setSch(false)
                 setmeta_Sch(false)
                 console.log(err)
             })
@@ -160,7 +161,7 @@ function Detail() {
                                 placeholder="Purwokerto">
                                 {
                                     pickLoc.map((v) => (
-                                        <option key={v}>{capitalTitle(v)}</option>
+                                        <option key={v}>{v}</option>
                                     ))}
                             </select>
 
