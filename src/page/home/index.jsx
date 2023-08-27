@@ -9,6 +9,7 @@ import Pagination from '../../component/pagination'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addData } from '../../store/reducer/user';
+import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -21,7 +22,7 @@ function Home() {
     const limit = 2
     const dispatch = useDispatch();
     const { isAuth } = useSelector((s) => s.users);
-
+    const navigate = useNavigate()
 
     const getMovies = async()=>{
         api({
@@ -70,6 +71,13 @@ function Home() {
         }
     };
 
+    useEffect(()=>{
+        fetchUser()
+        if(!isAuth){
+            navigate('/')
+        }
+    },[])
+
     useEffect(() => {
         getMovies();
 
@@ -81,6 +89,7 @@ function Home() {
     useEffect(()=>{
         getGenre()
     },[limit])
+
 
 
 
@@ -96,7 +105,12 @@ function Home() {
     return (
         <>
             <Navbar />
-            <ImageSlide />
+            {/** 
+            <div className='w-full max-h-[400px]'>
+                <ImageSlide slide={slides}/>
+            </div>
+    */}
+            <ImageSlide/>
 
             <section className="main-section px-20 mt-20">
                 <div className="flex xs:flex-col lg:flex-row xs:gap-y-5 lg:gap-y-0 genre-search-movie w-full">

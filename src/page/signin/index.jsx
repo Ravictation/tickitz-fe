@@ -60,7 +60,13 @@ function Signin() {
     } else {
       Show("wrong password", "error")
     }
+
   };
+  useEffect(() =>{
+    if(isAuth){
+        navigate('/')
+    }
+},[])
   return (
     <>
       <div className="h-screen flex justify-center items-center">
