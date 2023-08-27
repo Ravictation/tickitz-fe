@@ -109,7 +109,8 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
         }
       </div>
       <div className={isAuth ? "hidden" : "block"}>
-        <button onClick={() => { navigates(`/sign-in`) }} className="mt-2 h-6 w-16 md:h-8 md:w-20 bg-[#5F2EEA] rounded-md text-[10px] md:text-[12px] tracking-wide text-white">Sign Up</button>
+        <button onClick={() => { navigates(`/sign-in`) }} className="mt-2 h-6 w-16 md:h-8 md:w-20 border border-primary text-primary rounded-md text-[10px] md:text-[12px] tracking-wide text-white mr-4 hover:text-white hover:bg-primary">Sign In</button>
+        <button onClick={() => { navigates(`/sign-up`) }} className="mt-2 h-6 w-16 md:h-8 md:w-20 bg-[#5F2EEA] rounded-md text-[10px] md:text-[12px] tracking-wide text-white">Sign Up</button>
       </div>
       <div className={isAuth ? "flex items-center" : "hidden"}>
         <div className="flex">
