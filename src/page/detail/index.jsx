@@ -84,7 +84,7 @@ function Detail() {
 
             {detail ? (
                 detail.map((v) => {
-                    return <MovieDetail title={v.title} genre={v.genres} release={v.release_date} directed={v.directors} hour={v.duration_hour} time={v.duration_minute} casts={v.casts} foto={v.image} bgFoto={v.cover_image} synopsis={v.synopsis} />
+                    return <MovieDetail key={v} title={v.title} genre={v.genres} release={v.release_date} directed={v.directors} hour={v.duration_hour} time={v.duration_minute} casts={v.casts} foto={v.image} bgFoto={v.cover_image} synopsis={v.synopsis} />
                 })
             ) : (
                 <h1>Data Not Found</h1>
@@ -116,7 +116,7 @@ function Detail() {
                                 {
 
                                     pickDate.map((v) => (
-                                        <option>{v}</option>
+                                        <option key={v}>{v}</option>
                                     ))}
                             </select>
 
@@ -137,7 +137,7 @@ function Detail() {
                                 placeholder="Purwokerto">
                                 {
                                     pickTime.map((v) => (
-                                        <option>{v}</option>
+                                        <option key={v}>{v}</option>
                                     ))}
                             </select>
 
@@ -159,7 +159,7 @@ function Detail() {
                                 placeholder="Purwokerto">
                                 {
                                     pickLoc.map((v) => (
-                                        <option>{capitalTitle(v)}</option>
+                                        <option key={v}>{capitalTitle(v)}</option>
                                     ))}
                             </select>
 
@@ -181,7 +181,7 @@ function Detail() {
                         {sch ?
                             sch.map((v) => {
                                 return (
-                                    <div>
+                                    <div key={v.id_time_schedule}>
                                         <div className={(pickSch == v.id_time_schedule ? 'border-button' : 'bg-white') + " hover:border-button border rounded-md cinema xs:p-3 xs:flex-col lg:p-16 lg:max-h-[120px] flex lg:justify-center lg:items-center"} onClick={() => setPickSch(v.id_time_schedule)}>
                                             <img src={v.image_premier} alt="" className="xs:max-h-[25px] lg:max-h-[150px] w-fit" />
                                             <p className="xs:flex lg:hidden mt-2 text-md font-semibold">{v.name_premier}</p>

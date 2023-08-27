@@ -33,7 +33,7 @@ function MovieDetail({ bgFoto, genre, foto, title, directed, hour, time, release
                                 {genre ?
                                     genre.map((v) => {
                                         return (
-                                            <p className="bg-[#A0A3BD] opacity-50 text-black rounded-md p-1 px-3 flex justify-center items-center">{capitalTitle(v.name_genre)}</p>
+                                            <p key={v.name_genre} className="bg-[#A0A3BD] opacity-50 text-black rounded-md p-1 px-3 flex justify-center items-center">{capitalTitle(v.name_genre)}</p>
                                         )
                                     }) : ""}
                             </div>
@@ -51,11 +51,16 @@ function MovieDetail({ bgFoto, genre, foto, title, directed, hour, time, release
                             </div>
                             <div className="col-4 box-info lg:pb-5">
                                 <p className="info-in-top text-md text-font mb-1">Directed By</p>
-                                <p className="info-in-bottom text-md md:text-xl">{
+                                {
                                     directed ?
-                                        directed.map((v) => capitalTitle(v.name_director)) : ""
+                                        directed.map((v) => {
+                                            return (
+                                                <p key={v.name_director} className="info-in-bottom text-md md:text-xl">
+                                                    {capitalTitle(v.name_director)}
+                                                </p>
+                                            )
+                                        }) : ""
                                 }
-                                </p>
                             </div>
                             <div className="col-8 box-info lg:pb-5">
                                 <p className="info-in-top text-md text-font mb-1">Casts</p>
@@ -65,7 +70,7 @@ function MovieDetail({ bgFoto, genre, foto, title, directed, hour, time, release
                                             casts.map((v, i) => {
                                                 s = s + (i + 1 == casts.length ? v.name_cast : v.name_cast + ", ")
                                                 if (i + 1 == casts.length) {
-                                                    return (<p className="info-in-bottom text-md md:text-xl">{capitalTitle(s)}</p>)
+                                                    return (<p key={i} className="info-in-bottom text-md md:text-xl">{capitalTitle(s)}</p>)
                                                 }
                                             }) : ""
                                     }
