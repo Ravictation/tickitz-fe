@@ -25,7 +25,7 @@ const navigate = useNavigate()
 
                 <div className="body-card mt-2">
                 <h6 className="text-md mb-3 tracking-wide font-semibold">{name}</h6>
-                
+                <div className="flex flex-row">
                 {genre ? 
                     genre.map((v, index)=> {
                         return (
@@ -36,6 +36,7 @@ const navigate = useNavigate()
                             </div>
                         )}) : ''                    
                 }
+                </div>
                 </div>
             </div>
         

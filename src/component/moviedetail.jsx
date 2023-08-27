@@ -1,6 +1,6 @@
 import React from "react";
 
-function MovieDetail ({bgFoto, foto, title, directed, time, release, casts, synopsis}){
+function MovieDetail ({bgFoto, genre, foto, title, directed,hour, time, release, casts, synopsis}){
     return(
     <div>
         <div className="bg-cover bg-center">
@@ -20,9 +20,12 @@ function MovieDetail ({bgFoto, foto, title, directed, time, release, casts, syno
                         <h3 className="text-2xl flex font-semibold mt-2 xs:text-center xs:justify-center md:justify-normal">{title}</h3>
                         
                         <div className="wrapper-genre flex text-font flex-row text-xs gap-x-3 mt-3 xs:justify-center md:justify-normal xs:mb-3 md:mb-0">
-                            <p className="bg-placeholder rounded-md p-0.5 px-2">Action</p>
-                            <p className="bg-placeholder rounded-md p-0.5 px-2">Action</p>
-                            <p className="bg-placeholder rounded-md p-0.5 px-2">Action</p>
+                            {genre ? 
+                            genre.map((v)=>{
+                                return(
+                                    <p className="bg-placeholder rounded-md p-1 px-3 flex justify-center items-center">{v.name_genre}</p>
+                                )
+                            }): ""}
                         </div>
                     </div>
 
@@ -34,19 +37,32 @@ function MovieDetail ({bgFoto, foto, title, directed, time, release, casts, syno
 
                         <div className="col-8 box-info col lg:py-1">
                             <p className="info-in-top text-xs text-font mb-1">Duration</p>
-                            <p className="info-in-bottom text-sm ">{time}</p>
+                            <p className="info-in-bottom text-sm flex flex-row ">
+                            {hour} Hours {time} Minutes</p>
                         </div>
 
                         <div className="col-4 box-info lg:py-1">
                             <p className="info-in-top text-xs text-font mb-1">Directed By</p>
-                            <p className="info-in-bottom text-sm ">{directed}</p>
+                            <p className="info-in-bottom text-sm ">{
+                                directed ?
+                                    directed.map((v)=>  v.name_director):""
+                            }
+                            </p>
+
+
                         </div>
 
                         <div className="col-8 box-info lg:py-1">
                             <p className="info-in-top text-xs text-font mb-1">Casts</p>
-                            <p className="info-in-bottom text-sm ">
-                                {casts}
-                            </p>
+                            <div className="flex flex-row">
+                            {casts ?
+                                casts.map((v, i)=>{
+                                    return(
+                                        <p className="info-in-top text-xs text-font mb-1">{v.name_cast + (i+1 == casts.length ? '' : ',  '  )}</p>
+                                    )
+                                }):""
+                            }
+                            </div>
                         </div>
                     </div>
                 </div>
