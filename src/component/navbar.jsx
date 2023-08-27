@@ -9,7 +9,6 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
   const navigates = useNavigate();
   const dispatch = useDispatch()
   const { isAuth, data } = useSelector((s) => s.users)
-  console.log(isAuth)
   const [icon_search, seticon_search] = useState(true)
   const [header_search, setheader_search] = useState(true)
   const [menu_desktop, setmenu_desktop] = useState(true)
@@ -115,9 +114,9 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
       <div className={isAuth ? "flex items-center" : "hidden"}>
         <div className="flex">
           <Link className="hidden lg:block pl-7 text-[#414141] text-base font-normal hover:font-bold tracking-wide mr-3" to="/#">{location}</Link>
-          <i onClick={click_location} className="fa fa-sort-desc right-0 top-[10px] w-5 h-5 mr-7" aria-hidden="true" />
+          <i onClick={click_location} className="hidden lg:block fa fa-sort-desc right-0 top-[10px] w-5 h-5 mr-7" aria-hidden="true" />
         </div>
-        <Link to="/#" onClick={show_header_search} className={icon_search ? 'hidden lg:block pe-8' : 'hidden'}>
+        <Link onClick={show_header_search} className={icon_search ? 'hidden lg:block pe-8' : 'hidden'}>
           <i className="fa fa-search text-[#414141]" aria-hidden="true" />
         </Link>
         <div className={header_search ? 'hidden' : 'hidden lg:relative pe-8 lg:flex lg:items-center'}>

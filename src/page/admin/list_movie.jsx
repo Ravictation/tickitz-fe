@@ -6,6 +6,7 @@ import Pagination from "../../component/pagination"
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from '../../store/reducer/user'
+import moment from "moment/moment";
 
 function List_Movie() {
     const dateRef = useRef(null);
@@ -13,7 +14,7 @@ function List_Movie() {
     const navigates = useNavigate();
     const dispatch = useDispatch()
 
-    const [pickdate, setpickdate] = useState('')
+    const [pickdate, setpickdate] = useState("")
     const [movies, setmovies] = useState([]);
     const [metamovies, setmetamovies] = useState([]);
     const [pageactive, setpageactive] = useState(1)
@@ -21,10 +22,9 @@ function List_Movie() {
     const [search, setsearch] = useState('')
     const [by_genre, setby_genre] = useState('')
 
-
     const getMovies = async () => {
         try {
-            const { data } = await api({ method: 'GET', url: `/movies/?search=${search}&order_by=${sort}&page=${pageactive}&limit=1&by_genre=${by_genre}` })
+            const { data } = await api({ method: 'GET', url: `/movies/?search=${search}&order_by=${sort}&page=${pageactive}&limit=1&by_genre=${by_genre}&date=${pickdate}` })
             setmovies(data.data)
             setmetamovies(data.meta)
         } catch (error) {
@@ -51,7 +51,6 @@ function List_Movie() {
         e.preventDefault();
         try {
             const { data } = await api({ method: 'delete', url: `/movies/${delid_movie}` });
-            console.log(data);
             hidden_modal_delete();
             // setsuccess_message(data.message)
         } catch (error) {
@@ -73,6 +72,10 @@ function List_Movie() {
     useEffect(() => {
         getMovies()
     }, [pageactive, sort, search, by_genre, delid_movie]);
+    useEffect(() => {
+        setpageactive(1)
+        getMovies()
+    }, [pickdate]);
     return (
         <>
             <Navbar />
@@ -85,8 +88,11 @@ function List_Movie() {
                             </div>
                             <div className="w-92 flex justify-between">
                                 <div className="relative mb-3 mr-3">
+                                    <div className="relative h-10 w-40">
+                                        <input type="date" ref={dateRef} onChange={(e) => setpickdate(e.target.value)} className="absolute bg-[#EFF0F6] h-10 w-40 pl-8 rounded-md appearance-none text-sm" />
+                                        <input type="text" className="absolute bg-[#EFF0F6] h-10 w-40 pl-8 rounded-md appearance-none text-sm" value={pickdate == "" ? moment.utc().utc().format('MMMM YYYY') : moment.utc(pickdate).utc().format('MMMM YYYY')} />
+                                    </div>
                                     <i className="fa fa-calendar absolute left-2 top-[12px]" aria-hidden="true" />
-                                    <input type="date" ref={dateRef} onChange={(e) => setpickdate(e.target.value)} className="bg-[#EFF0F6] h-10 w-40 pl-8 rounded-md appearance-none text-sm" />
                                     <i onClick={() => { dateRef.current.showPicker(); }} className="fa fa-sort-desc absolute right-0 top-[10px] bg-[#EFF0F6] w-5 h-5" aria-hidden="true" />
                                 </div>
                                 <div className="h-10 w-28 bg-primary rounded-md">
@@ -97,19 +103,19 @@ function List_Movie() {
                         <div className="w-full mt-5">
                             <table className="w-full text-center">
                                 <tr className="text-[12px] font-semibold h-10">
-                                    <td className="">No</td>
-                                    <td className="">Tumbnail</td>
-                                    <td className="">Movie Name</td>
-                                    <td className="">Category</td>
-                                    <td className="">Release Date</td>
-                                    <td className="">Duration</td>
-                                    <td className="">Action</td>
+                                    <td>No</td>
+                                    <td>Tumbnail</td>
+                                    <td>Movie Name</td>
+                                    <td>Category</td>
+                                    <td>Release Date</td>
+                                    <td>Duration</td>
+                                    <td>Action</td>
                                 </tr>
                                 {
                                     movies ? (
                                         movies.map((v, i) => {
                                             return (
-                                                <tr className="text-[12px] font-semibold h-10 border-t">
+                                                <tr key={i} className="text-[12px] font-semibold h-10 border-t">
                                                     <td>{i + 1}</td>
                                                     <td className="flex justify-center">
                                                         <div className="h-[50px] w-[50px] my-2">
@@ -118,14 +124,19 @@ function List_Movie() {
                                                     </td>
                                                     <td>{v.title}</td>
                                                     <td>{v.genres.map((vv, i) => capitalTitle(vv.name_genre) + (i + 1 == v.genres.length ? "" : ", "))}</td>
-                                                    <td>{v.release_date}</td>
+                                                    <td>{moment.utc(v.release_date).utc().format('D MMMM YYYY')}</td>
                                                     <td>{v.duration_hour + " hour " + v.duration_minute + " minute"}</td>
-                                                    <td><button
-                                                        onClick={() => setdelid_movie(v.id_movie)}
-                                                        className="mt-3 h-7 w-full rounded border border-[#ED2E7E] text-[#ED2E7E] text-sm font-semibold leading-none hover:bg-[#ED2E7E] active:bg-[#3604c3] hover:text-white"
-                                                    >
-                                                        Delete
-                                                    </button></td>
+                                                    <td>
+                                                        <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-primary text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
+                                                            <i className="fa fa-eye text-white" aria-hidden="true"></i>
+                                                        </Link>
+                                                        <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#5D5FEF] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
+                                                            <i className="fa fa-pencil text-white" aria-hidden="true"></i>
+                                                        </Link>
+                                                        <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#ED2E7E] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
+                                                            <i className="fa fa-trash text-white" aria-hidden="true"></i>
+                                                        </Link>
+                                                    </td>
                                                 </tr>
                                             )
                                         })
