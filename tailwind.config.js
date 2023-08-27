@@ -8,8 +8,8 @@ module.exports = {
         'background' : '#A0A3BD33',
         'font': '#8692A6',
         'placeholder': '#A0A3BD',
-        'fontInput' : '#EFF0F6'
-        
+        'fontInput' : '#EFF0F6',
+        'backgroundLetter': "url('/src/assets/BG.png')"
       },
       borderWidth:{
         DEFAULT: '1px',
