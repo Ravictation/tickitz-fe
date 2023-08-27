@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import useApi from "../../helpers/useApi";
 import { Show } from "../../helpers/toast";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function Payment(){
     const { data } = useSelector ((s) => s.users)
     const navigate = useNavigate()
     const api = useApi()
-    console.log(data)
+    const params = useParams()
+
     const generateVirtualAccount = () => {
         const randomNumbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 10));
         const virtualAccountNumber = randomNumbers.join("");
@@ -42,11 +44,12 @@ function Payment(){
               id_time_schedule: scheduleid
             }
           });
+          const direct = response.data.data
       
           if (response.status === 200) {
             Show('Purchase Ticket Success', 'success');
             setTimeout(() => {
-              navigate('/success/tickets');
+              navigate(`/success/tickets/${direct}`);
             }, 3000);
           } else {
             Show('Purchase Ticket Failed', 'error');
@@ -54,8 +57,8 @@ function Payment(){
         } catch (error) {
           Show('An error occurred', 'error');
         }
-      };
-      
+      }
+
     
     return(
         <>
@@ -106,7 +109,7 @@ function Payment(){
                         />
 
         <h1 className="font-bold text-2xl mt-10">PAYMENT METHOD</h1>
-        <div className="flex flex-row gap-x-10 mt-10">
+        <div className="flex  lg:flex-row gap-x-10 mt-10">
             <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
                 <img src={Googlepay} alt=""/>
             </div>
@@ -121,16 +124,16 @@ function Payment(){
             </div>
         </div>
         <div className="flex flex-row gap-x-10 mt-10">
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
         </div>
