@@ -7,11 +7,13 @@ import { Link } from "react-router-dom";
 import useApi from "../../helpers/useApi";
 import { Show } from "../../helpers/toast";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function Payment(){
     const { data } = useSelector ((s) => s.users)
     const navigate = useNavigate()
     const api = useApi()
+    const params = useParams()
     console.log(data)
     const generateVirtualAccount = () => {
         const randomNumbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 10));
@@ -42,11 +44,12 @@ function Payment(){
               id_time_schedule: scheduleid
             }
           });
+          const direct = response.data.data
       
           if (response.status === 200) {
             Show('Purchase Ticket Success', 'success');
             setTimeout(() => {
-              navigate('/success/tickets');
+              navigate(`/success/tickets/${direct}`);
             }, 3000);
           } else {
             Show('Purchase Ticket Failed', 'error');
@@ -54,8 +57,8 @@ function Payment(){
         } catch (error) {
           Show('An error occurred', 'error');
         }
-      };
-      
+      }
+
     
     return(
         <>

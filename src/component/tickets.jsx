@@ -2,7 +2,7 @@ import React from "react";
 import QR from "../assets/QR Code 2.png"
 
 
-function Ticketscard (premier, title, date, time, seats, total ) {
+function Ticketscard ({premier, title, date, time, seats, total} ) {
 
     return (
         <>

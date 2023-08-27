@@ -7,33 +7,32 @@ import { useState } from "react";
 import { Show } from "../../helpers/toast";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../helpers/useApi";
-import profile from "../../assets/default-user.png"
 import { useEffect,useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { addData } from "../../store/reducer/user";
 
 function Profile() {
     const { data, isAuth } = useSelector((s)=>s.users)
     const navigate = useNavigate()
     const api = useApi()
-    const [image, setImage] = useState('')
-    const [state, setState] = useState(true)
+    const [selectedFile, setSelectedFile] = useState(null);
     const inputChange = (e) => {
     const data = { ...form };
-    const formData = new FormData()
     data[e.target.name] = e.target.value;
     setForm(data);
     };
-    const onImageClick = () => {
-        inputRef.current.click()
-    }
-    const inputRef = useRef(null)
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        console.log(file)
-        setImage(file)
-        setState(false)
-    }
+    const dispatch = useDispatch();
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+    const fetchUser = async () => {
+        try {
+            const { data } = await api.get('http://localhost:8081/user/');
+            dispatch(addData(data.data));
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const [form, setForm] = useState({});
     const Update = () =>
             api({
@@ -54,32 +53,36 @@ function Profile() {
             } else if (axiosErr.error !== undefined) {
                 Show(axiosErr.error, 'error')
         }})
-
-        const UpdateImage = async () => {
-            try {
-                if (image) {
-                    const formData = new FormData();
-                    formData.append("image_user", image);
+    const UpdateImage = async () => {
+            try { if (selectedFile) {
+                const formData = new FormData();
+                formData.append("image_user", selectedFile);
     
                     const { data } = await api({
                         url: "/user/image",
                         method: "PATCH",
                         data: formData,
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                          },
                     });
-    
-                    if (data.status === 200) {
-                        Show("Image updated successfully", "success");
-                        navigate("/home");
-                    }
+                   
                 }
+               
+                        Show("Image updated successfully", "success");
+                        window.location.reload();
+                    
             } catch (error) {
                 console.error("Error updating image:", error);
                 Show("Error updating image", "error");
             }
         };
+
     useEffect(() =>{
-        console.log(state)
-    }, [state])
+        if (isAuth) {
+            fetchUser();
+        }
+    }, [isAuth]);
     return(
         <>
         <Navbar/>
@@ -87,11 +90,11 @@ function Profile() {
             <div className="w-1/4 bg-white rounded-lg flex flex-col items-center pt-5 pb-5">
                 <p className="text-left">INFO</p>
                 <div className="flex flex-col justify-center items-center relative group">
-                <btn onClick={onImageClick} className=" hover:bg-primary hover:text-white group-hover:flex hidden  rounded-lg btn absolute border-none">Change <br /> Image</btn>
-                <img onClick={onImageClick} src={image ? URL.createObjectURL(image) : (data.image_user == null ? profile : data.image_user)} className="w-20 md:w-28 cursor-pointer" alt="profile_picture" />
-                <p className="btn mt-10" onClick={UpdateImage}>update image</p>
+                
+                <img  src={data.image_user} className="w-20 md:w-28 cursor-pointer" alt="profile_picture" />
+                <p className="btn mt-10" onClick={UpdateImage} >update image</p>
                  <span className="flex items-center gap-4 mt-3">
-                <input type="file" name="image_user" onChange={handleImageChange} ref={inputRef} style={{ display: "none" }} />
+                <input type="file" name="image_user" onChange={handleFileChange} />
                 </span>
                 </div>
                 <p className="font-bold text-xl mt-5">{`${data.first_name} ${data.last_name}`}</p>

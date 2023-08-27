@@ -125,8 +125,8 @@ function Order () {
                     <hr className="my-3 border-gray-300" />
 
                     <div className="flex flex-row justify-between mx-5">
-                       <h1 className="font-bold text-xl">Total Payment</h1>
-                       <h1 className="font-bold text-xl text-blue-600">$30</h1>
+                       <h1 className="font-bold text-xl">Price per Seat</h1>
+                       <h1 className="font-bold text-xl text-blue-600">{details.price}</h1>
                     </div>
                 </div>
                 <Link to="/payment" className="block bg-blue-600 w-full py-5 text-white mt-10 rounded-lg text-center" onClick={handleContinue}>Checkout Now</Link>
