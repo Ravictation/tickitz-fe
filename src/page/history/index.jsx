@@ -3,21 +3,24 @@ import Navbar from "../../component/navbar";
 import Footer from "../../component/footer";
 import Ticketscard from "../../component/tickets";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect,useRef } from "react";
 import useApi from "../../helpers/useApi";
 import { Show } from "../../helpers/toast";
 import loyalty from "../../assets/loyalty.jpg"
 import { useDispatch } from "react-redux";
 import { addData } from "../../store/reducer/user";
+import Pagination from "../../component/pagination"
 
 function History () {
     const dispatch = useDispatch()
     const { data, isAuth } = useSelector((s)=>s.users)
     const [selectedFile, setSelectedFile] = useState(null);
     const [booking, setBooking] = useState([])
-
+    const [pageactive, setpageactive] = useState(1)
+    const [metabooking, setmetabooking] = useState([]);
     const api = useApi()
+    const navigate = useNavigate()
     
     const handleFileChange = (e) => {
       setSelectedFile(e.target.files[0]);
@@ -26,7 +29,6 @@ function History () {
       try {
           const { data } = await api.get('http://localhost:8081/user/');
           dispatch(addData(data.data));
-          console.log(data);
       } catch (error) {
           console.log(error);
       }
@@ -35,11 +37,12 @@ function History () {
         try {
             const response = await api({
                 method: "GET",
-                url: "/bookings/user"
+                url: `/bookings/user?limit=2&page=${pageactive}`
             });
+
+            setmetabooking(response.data.meta)
             const data = response.data;
             setBooking(data.data);
-            console.log(data.data);
         } catch (error) {
             console.log(error);
         }
@@ -71,10 +74,14 @@ useEffect(() =>{
   if (isAuth) {
       fetchUser();
   }
-}, [isAuth]);
+}, [isAuth, pageactive]);
     
 useEffect(() =>{
     getBooking();
+    setpageactive()
+    if(!isAuth){
+      navigate('/')
+  }
 }, [ ])
 
 
@@ -108,7 +115,9 @@ useEffect(() =>{
             return <Ticketscard premier={v.schedule[0].image_premier} title={v.schedule[0].title} date={v.schedule[0].set_date} time={v.schedule[0].time_schedule} seats={v.seats} total={v.total}/>
           })):
           (<h1>Data Not Found</h1>)}
+          <Pagination meta={metabooking} page_active={pageactive} set_page_active={setpageactive} />
         </div>
+        
       </main>
       <Footer />
         </>

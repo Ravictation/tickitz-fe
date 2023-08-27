@@ -48,7 +48,6 @@ function Signup() {
     if (validateForm() && isChecked) {
       try {
         const response = await axios.post("http://localhost:8081/user/", form);
-        console.log("Registrasi Berhasil", response.data);
         Show("Registration Success", "success");
 
         setTimeout(() => {
