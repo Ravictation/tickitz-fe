@@ -64,6 +64,12 @@ function Signup() {
     }
   };
 
+    useEffect(() =>{
+      if(isAuth){
+          navigate('/')
+      }
+  },[])
+
   return (
     <>
 
