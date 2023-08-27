@@ -14,7 +14,7 @@ function Payment(){
     const navigate = useNavigate()
     const api = useApi()
     const params = useParams()
-    console.log(data)
+
     const generateVirtualAccount = () => {
         const randomNumbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 10));
         const virtualAccountNumber = randomNumbers.join("");
@@ -109,7 +109,7 @@ function Payment(){
                         />
 
         <h1 className="font-bold text-2xl mt-10">PAYMENT METHOD</h1>
-        <div className="flex flex-row gap-x-10 mt-10">
+        <div className="flex  lg:flex-row gap-x-10 mt-10">
             <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
                 <img src={Googlepay} alt=""/>
             </div>
@@ -124,16 +124,16 @@ function Payment(){
             </div>
         </div>
         <div className="flex flex-row gap-x-10 mt-10">
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
                 <img src={Googlepay} alt=""/>
             </div>
         </div>
