@@ -1,18 +1,27 @@
 import React,{useEffect, useState} from "react";
 import Navbar from '../../component/navbar'
 import Footer from '../../component/footer'
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useApi from '../../helpers/useApi'
+import moment from "moment/moment"
 import MovieDetail from '../../component/moviedetail'
-import bgFoto from '../../assets/background-1.png'
-import foto from '../../assets/card1.png'
-//import Select from 'react-select'
+// import {useSelector, useDispatch} from 'react-redux';
+// import {addData} from'../../store/reducer/user'
 
 function Detail (){
     const params= useParams()
     const paramsId = params.id
     const [detail, setDetail] = useState([])
+    const [pickTime, setPickTime]=useState([])
+    const [pickDate, setPickDate]=useState([])
+    const [pickLoc, setPickLock]=useState([])
+    const [sch, setSch] = useState([])
+    const [pickSch, setPickSch] = useState('')
+    // const dispatch = useDispatch()
+    // const {isAuth} = useSelector((s)=> s.users)
     const api = useApi()
+    const navigate = useNavigate()
+    const limitSch = 4
 
 
     const getDetail = async () =>{
@@ -23,17 +32,44 @@ function Detail (){
             })             
             .then(({data})=>{
                 setDetail(data.data)
+                setPickLock(data.data[0].locations)
+                setPickTime(data.data[0].times)
+                setPickDate(data.data[0].set_dates)
             })
             .catch((err)=>{
                 console.log(err)
             })
         }
-    
 
+    const getSch = async()=>{
+        api({
+            method: 'GET',
+            url: `times_schedules/?movie=${paramsId}&limit=${limitSch}`,
+            data: sch
+        })
+        .then(({data})=>{
+            setSch(data.data)
+        })            
+        .catch((err)=>{
+            console.log(err)
+        })
+    } 
+
+    
+    
     useEffect(()=>{
         getDetail()
+
     },[])
 
+    useEffect(()=>{
+        getSch()
+    },[])
+
+    useEffect(()=>{
+        getSch()
+    },[pickSch])
+    
 
     return (
         <div>
@@ -41,7 +77,7 @@ function Detail (){
 
             {detail ? (
                 detail.map((v)=>{
-                    return <MovieDetail title={v.title} foto={v.image} bgFoto={v.cover_image}/>
+                    return <MovieDetail title={v.title} genre={v.genres} release={v.release_date} directed={v.directors} hour={v.duration_hour} time={v.duration_minute} casts={v.casts} foto={v.image} bgFoto={v.cover_image} synopsis={v.synopsis}/>
                 })
             ):(
                 <h1>Data Not Found</h1>
@@ -57,39 +93,49 @@ function Detail (){
                 </div>
 
                 <div className="flex xl:justify-between xs:flex-col xs:gap-y-5 lg:flex-row lg:gap-x-5 w-full xs:px-10 md:px-16 lg:px-16 lg:mt-8">
-                    <div className="choose-date flex flex-col">
-                        <label className="font-semibold lg:ms-4">Choose Date</label>
-                        <div className="border rounded-md bg-fontInput flex flex-row p-2 lg:ms-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                            </svg>
+                    
+                <div className="choose-date flex flex-col">
+                    <label className="font-semibold lg:ms-4">Choose Date</label>
+                    <div className="border rounded-md bg-fontInput flex flex-row p-2 lg:ms-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                           
 
-                            <input
-                            className="w-full lg:ms-5 text-black bg-fontInput"
-                            placeholder="21/07/20"/>
+                    <select 
+                    className="w-full lg:ms-5 p-0.5 text-black bg-fontInput outline-none"
+                    placeholder="Purwokerto">
+                    {   
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </div>
+                        pickDate.map((v)=>(
+                        <option>{v}</option>
+                    ))}
+                    </select>
+                                    
                     </div>
+                </div>
 
-                    <div className="choose-time hidden lg:flex flex-col">
+                    <div className="choose-date flex flex-col">
                         <label className="font-semibold lg:ms-4">Choose Time</label>
                         <div className="border rounded-md bg-fontInput flex flex-row p-2 lg:ms-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
+                                 
 
-                            <input
-                            className="w-full lg:ms-5 text-black bg-fontInput"
-                            placeholder="08 : 30 AM"/>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
+                        <select 
+                        className="w-full lg:ms-5 p-0.5 text-black bg-fontInput outline-none"
+                        placeholder="Purwokerto">
+                        {   
+    
+                            pickTime.map((v)=>(
+                            <option>{v}</option>
+                        ))}
+                        </select>
+                                         
                         </div>
-                    </div>
+                </div>
+
 
                     <div className="choose-date flex flex-col">
                         <label className="font-semibold lg:ms-4">Choose Location</label>
@@ -97,16 +143,18 @@ function Detail (){
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                      
+                            </svg>           
 
-                            <input
-                            className="w-full lg:ms-5 text-black bg-fontInput"
-                            placeholder="Purwokerto"/>
-                    
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
+                            <select 
+                            className="w-full lg:ms-5 p-0.5 text-black bg-fontInput outline-none"
+                            placeholder="Purwokerto">
+                            {   
+        
+                                pickLoc.map((v)=>(
+                                <option>{v}</option>
+                            ))}
+                            </select>
+                                             
                         </div>
                     </div>
 
@@ -121,22 +169,36 @@ function Detail (){
                         <p className="text-font xs:text-center lg:text-normal">39 Result</p>
                     </div>
 
-                    <div className="flex xs:flex-col xs:gap-y-5 md:px-16 lg:gap-y-0 xs:px-10 lg:px-0 lg:flex-row mt-5 w-full justify-between">
-                        <div className="border rounded-md cinema p-16 flex justify-center items-center">
-                            Ebv.id
-                        </div>
+                    <div className="flex xs:flex-col xs:gap-y-5 lg:gap-x-3 md:px-16 lg:gap-y-0 xs:px-10 lg:px-0 lg:flex-row mt-5 w-full justify-between">
+                        
+                    
+                        {sch ?
+                         sch.map((v)=>{
+                            return (
+                                <div>
+                                    <div className= { (pickSch == v.id_time_schedule ? 'border-button' : 'bg-white') + " border rounded-md cinema xs:p-3 xs:flex-col lg:p-16 lg:max-h-[120px] flex lg:justify-center lg:items-center"} onClick={()=>setPickSch(v.id_time_schedule)}>
+                                        <img src={v.image_premier} alt="" className="xs:max-h-[13px] lg:max-h-[150px] w-fit"/>
+                                        <p className="xs:flex lg:hidden mt-2 text-md font-semibold">{v.name_premier}</p>
+                                        <p className="xs:flex text-xs mt-2 text-font lg:hidden">{v.regency}</p>
+                                        <div className="my-3 flex w-full lg:hidden">
+                                            <hr className="w-full"/>
+                                        </div>
+                                        <div className="w-full flex flex-row justify-between lg:hidden">
+                                            <p className="text-lg font-semibold">Price</p>
+                                            <p>{v.price}</p>
+                                        </div>
 
-                        <div className="border rounded-md cinema p-16 cinema flex justify-center items-center">
-                            Ebv.id
-                        </div>
+                                        <div className="w-full flex flex-row justify-between lg:hidden">
+                                            <p className="text-lg font-semibold">Date</p>
+                                            <p>{v.set_date}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }):(
+                            <div>Data Not Found</div>
+                        )}
 
-                        <div className="border rounded-md cinema p-16 cinema flex justify-center items-center">
-                            Ebv.id
-                        </div>
-
-                        <div className="border rounded-md cinema p-16 cinema flex justify-center items-center">
-                            Ebv.id
-                        </div>
                     </div>
                 </div>
 
@@ -158,7 +220,7 @@ function Detail (){
                     </div>
                 </div>
 
-                <button className="w-full flex justify-center items-center mt-10 ">
+                <button className="w-full flex justify-center items-center mt-10" onClick={()=> navigate(`/order/${pickSch}`)}>
                     <div className="text-white bg-button px-5 py-3 rounded-md">    
                         Book Now
                     </div>

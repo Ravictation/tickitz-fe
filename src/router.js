@@ -28,7 +28,7 @@ function Router() {
                 <Route path="/payment" element={<Payment />} />
                 {/* verdi route */}
                 <Route path="/list_movie" element={<Admin_list_movie />} />
-                <Route path="/manage_movie" element={<Admin_manage_movie />} />
+                <Route path="/manage_movie/:id" element={<Admin_manage_movie />} />
             </Routes>
         </BrowserRouter>
     )

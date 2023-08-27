@@ -52,6 +52,7 @@ function List_Movie() {
         try {
             const { data } = await api({ method: 'delete', url: `/movies/${delid_movie}` });
             hidden_modal_delete();
+            setpageactive(1)
             // setsuccess_message(data.message)
         } catch (error) {
             if (error.response.data.status == 401) {
@@ -96,7 +97,7 @@ function List_Movie() {
                                     <i onClick={() => { dateRef.current.showPicker(); }} className="fa fa-sort-desc absolute right-0 top-[10px] bg-[#EFF0F6] w-5 h-5" aria-hidden="true" />
                                 </div>
                                 <div className="h-10 w-28 bg-primary rounded-md">
-                                    <button className="h-full w-full text-sm text-[#F7F7FC]">Add Movie</button>
+                                    <button onClick={() => navigates(`/manage_movie/add`)} className="h-full w-full text-sm text-[#F7F7FC]">Add Movie</button>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +131,7 @@ function List_Movie() {
                                                         <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-primary text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
                                                             <i className="fa fa-eye text-white" aria-hidden="true"></i>
                                                         </Link>
-                                                        <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#5D5FEF] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
+                                                        <Link to={"/manage_movie/" + v.id_movie} className="mt-3 py-1 px-2 mx-2 rounded bg-[#5D5FEF] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
                                                             <i className="fa fa-pencil text-white" aria-hidden="true"></i>
                                                         </Link>
                                                         <Link onClick={() => setdelid_movie(v.id_movie)} className="mt-3 py-1 px-2 mx-2 rounded bg-[#ED2E7E] text-[#ED2E7E] text-sm font-semibold leading-none hover:text-white">
