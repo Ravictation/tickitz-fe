@@ -20,7 +20,7 @@ function Home() {
     const [metaMovies, setMetaMovies] = useState([])
     //const [release, setRelease] = useState('')
     const api = useApi();
-    const limit = 2
+    const limit = 11
     const dispatch = useDispatch();
     const { isAuth } = useSelector((s) => s.users);
     const navigate = useNavigate()
@@ -99,7 +99,7 @@ function Home() {
 
     useEffect(()=>{
         getMovies()
-    },[pageActive, filterSearch, filterGenre])
+    },[pageActive, filterSearch, filterGenre, limit])
 
     useEffect(()=>{
         setPageActive(1)
@@ -146,7 +146,7 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="p-5 flex flex-wrap gap-x-5 xs:gap-y-5 lg:gap-y-0 justify-center ">
+                <div className="p-5 flex flex-wrap gap-x-5 gap-y-5 justify-center ">
                     {movies ? (
                         movies.map((v) => {
                             return <CardMovie id={v.id_movie} image={v.image} name={v.title} genre={v.genres} release={v.release_date} />
