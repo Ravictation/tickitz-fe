@@ -51,7 +51,7 @@ function Signup() {
         Show("Registration Success", "success");
 
         setTimeout(() => {
-          navigate("/login");
+          navigate("/sign-in");
         }, 3000);
       } catch (error) {
         console.error(error.message);
@@ -141,6 +141,7 @@ function Signup() {
               </p>
               <h1 className="border-b leading-[0.1rem] border-[#DEDEDE] text-center my-5">
                 <span className="bg-white text-center"><Link className="p-5 text-[#AAAAAA] font-semibold text-md">or</Link></span>
+                
               </h1>
               <img src={signup} />
             </div>

@@ -45,8 +45,7 @@ function Signin() {
     if (validateForm()) {
       try {
         const response = await axios.post("http://localhost:8081/auth/login", form);
-        const data = response.data; // Dapatkan data dari respons
-        console.log("Login Berhasil", data);
+        const data =  response.data;
         Show("Login Success", "success");
         const token = data.data;
         dispatch(login(token));
@@ -55,7 +54,8 @@ function Signin() {
         }, 3000);
 
       } catch (error) {
-        console.error(error.message);
+        Show(error.response.data.data, "error")
+        console.log(error.response.data.data);
       }
     } else {
       Show("wrong password", "error")
@@ -124,7 +124,9 @@ function Signin() {
               {/* </form> */}
               <h1 className="border-b leading-[0.1rem] border-[#DEDEDE] text-center my-5">
                 <span className="bg-white text-center"><Link className="p-5 text-[#AAAAAA] font-semibold text-md">or</Link></span>
+               
               </h1>
+              <Link to="/sign-up" className="text-center text-blue-500 font-bold">Register</Link>
               <img src={signup} />
             </div>
           </div>
