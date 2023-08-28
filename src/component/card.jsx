@@ -1,15 +1,28 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function CardMovie({id, name, image, genre}){
+function CardMovie({id, name, release,image, genre}){
+    const date= new Date()
+    const m2 = ('0'+(date.getMonth()+1)).slice(-2)
+    const m3 = date.getFullYear()
+    const m1 = release.split('-')
+    console.log(m1)
+
+    console.log(m3)
+    
 
 const navigate = useNavigate()
     
     return (
         <div>
-            <div className="card-movie w-32 h-fit group">
+            <div className="card-movie w-48 group">
                 <div className="card-overflow relative overflow-hidden">
-                    <img src={image} className="object-cover" alt=""/>
+            
+                    <div className={ m1[1] == m2 && m1[0] == m3 ? "recomended absolute mt-2 rounded-e-md w-full h-7 ps-2 text-white flex  bg-button"  : "hidden"}>
+                        recomended
+                    </div>
+
+                    <img src={image} className="object-cover h-[320px]  rounded-md" alt=""/>
                     <div className="absolute h-full w-full bg-black/20 flex items-center justify-center -bottom-0 group-hover:bottom:0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="flex flex-col gap-y-2">
                             <button className="border text-white rounded-md p-2 text-sm" onClick={()=>navigate(`/movie/detail/${id}`)}>
