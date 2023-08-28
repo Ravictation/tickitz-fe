@@ -49,7 +49,7 @@ Team    :
 Clone the repository
 
 ```bash
-  git clone https://github.com/Ravictation/zwallet-react.git
+  git clone https://github.com/zakifrhn/tickitz-fe.git
 ```
 
 Enter the repository
@@ -88,11 +88,14 @@ Start the app
 
     
 ## Screenshots
-
+![App Screenshot](https://github.com/zakifrhn/tickitz-fe/blob/development/src/assets/bookscreen.PNG?raw=true)
+![App Screenshot](https://github.com/zakifrhn/tickitz-fe/blob/development/src/assets/OrderScreen.PNG?raw=true)
+![App Screenshot](https://github.com/zakifrhn/tickitz-fe/blob/development/src/assets/managemovie.PNG?raw=true)
+![App Screenshot](https://github.com/zakifrhn/tickitz-fe/blob/development/src/assets/addmovie.PNG?raw=true)
 
 ## Related
 
-[Tickitz Backend]([https://github.com/Ravictation/tickitzgolang/tree/development])
+[Tickitz Backend](https://github.com/Ravictation/tickitzgolang/tree/development)
 
 
 ## License
