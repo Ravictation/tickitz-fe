@@ -82,11 +82,11 @@ function Detail() {
         getSch()
     }, [pickSch, pageactive])
 
-    useEffect(()=>{
-        if(!isAuth){
+    useEffect(() => {
+        if (!isAuth) {
             navigate('/sign-in')
         }
-    },[])
+    }, [])
 
     return (
         <div>
@@ -190,6 +190,7 @@ function Detail() {
 
                         {sch ?
                             sch.map((v) => {
+                                const time_a = v.time_schedule.split(":")[0] + ":" + v.time_schedule.split(":")[1] + " WIB"
                                 return (
                                     <div key={v.id_time_schedule}>
                                         <div className={(pickSch == v.id_time_schedule ? 'border-button' : 'bg-white') + " hover:border-button border rounded-md cinema xs:p-3 xs:flex-col lg:p-16 lg:max-h-[120px] flex lg:justify-center lg:items-center"} onClick={() => setPickSch(v.id_time_schedule)}>
@@ -210,7 +211,7 @@ function Detail() {
                                             </div>
                                             <div className="w-full flex flex-row justify-between lg:hidden">
                                                 <p className="text-lg font-semibold">Time</p>
-                                                <p>{moment.utc(v.set_date).utc().format('MMMM D, YYYY')}</p>
+                                                <p>{time_a}</p>
                                             </div>
                                         </div>
                                     </div>
