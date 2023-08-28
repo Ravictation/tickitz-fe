@@ -29,7 +29,7 @@ const navigate = useNavigate()
                                 Details
                             </button>
 
-                            <button className=" bg-button rounded-md p-2 text-sm" onClick={()=>navigate(`/movie/detail/:${id}`)}>
+                            <button className=" bg-button rounded-md p-2 text-sm" disabled onClick={()=>navigate(`/movie/detail/:${id}`)}>
                                 Buy Ticket
                             </button>
                         </div>
