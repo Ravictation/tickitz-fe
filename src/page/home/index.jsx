@@ -18,6 +18,7 @@ function Home() {
     const [filterSearch, setFilterSearch] = useState([])
     const [pageActive, setPageActive] = useState(1)
     const [metaMovies, setMetaMovies] = useState([])
+    //const [release, setRelease] = useState('')
     const api = useApi();
     const limit = 2
     const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function Home() {
             .then(({data})=>{
                 setMovies(data.data)
                 setMetaMovies(data.meta)
+                //setRelease(movies.release_date)
                 console.log(data.data)
             })
             .catch((err)=>{
@@ -41,7 +43,9 @@ function Home() {
                 console.log(err)
         })
     }
+    //console.log(release)
 
+    
     console.log(movies)
     console.log()
     const getGenre = async() =>{
@@ -142,10 +146,10 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="p-5 flex flex-wrap gap-x-5 xs:gap-y-5 lg:gap-y-0 xs:justify-center md:justify-normal">
+                <div className="p-5 flex flex-wrap gap-x-5 xs:gap-y-5 lg:gap-y-0 justify-center ">
                     {movies ? (
                         movies.map((v) => {
-                            return <CardMovie id={v.id_movie} image={v.image} name={v.title} genre={v.genres} />
+                            return <CardMovie id={v.id_movie} image={v.image} name={v.title} genre={v.genres} release={v.release_date} />
                         })
                     ) : (
                         <h1>Data Not Found</h1>
