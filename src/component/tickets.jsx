@@ -4,6 +4,9 @@ import { useState } from "react";
 
 function Ticketscard ({premier, title, date, time, seats, total} ) {
     const [showDetails, setShowDetails] = useState(false);
+    const ticketData = seats; 
+    const ticketsArray = ticketData.split(",");
+    const ticketCount = ticketsArray.length;
 
   const toggleShowDetails = () => {
     setShowDetails(!showDetails);
@@ -35,7 +38,7 @@ function Ticketscard ({premier, title, date, time, seats, total} ) {
             <h1>Ticket Information</h1>
             <img src={QR} alt="" />
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-col md:flex-row">
                
                 <div className="flex flex-col gap-y-10">
                 <div className="flex flex-row gap-x-10">
@@ -63,7 +66,7 @@ function Ticketscard ({premier, title, date, time, seats, total} ) {
                     </div>
                     <div>
                     <p>Count</p>
-                    <p>{seats}</p>
+                    <p>{ticketCount}</p>
                     </div>
                 </div>
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../component/navbar";
 import Footer from "../../component/footer";
 import Googlepay from "../../assets/logos_google-pay.png"
@@ -8,9 +8,20 @@ import useApi from "../../helpers/useApi";
 import { Show } from "../../helpers/toast";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import moment from 'moment'
+import visa from "../../assets/logos_visa.png"
+import gopay from "../../assets/Logo GoPay (SVG-240p) - FileVector69 1.png"
+import paypal from "../../assets/logos_paypal.png"
+import dana from "../../assets/Logo DANA (PNG-240p) - FileVector69 1.png"
+import bca from "../../assets/Bank BCA Logo (SVG-240p) - FileVector69 1.png"
+import bri from "../../assets/Bank BRI (Bank Rakyat Indonesia) Logo (SVG-240p) - FileVector69 1.png"
+import ovo from "../../assets/Vector.png"
+import { UseSelector } from "react-redux/es/hooks/useSelector";
+
+
 
 function Payment(){
-    const { data } = useSelector ((s) => s.users)
+    const { data, isAuth } = useSelector ((s) => s.users)
     const navigate = useNavigate()
     const api = useApi()
     const params = useParams()
@@ -58,7 +69,11 @@ function Payment(){
           Show('An error occurred', 'error');
         }
       }
-
+      useEffect(()=> {
+        if(!isAuth){
+          navigate("/")
+        }
+      })
     
     return(
         <>
@@ -73,7 +88,7 @@ function Payment(){
         <div className="bg-white w-3/4 px-10 py-10">
         <h1 className="font-bold text-2xl">Payment Info</h1>
         <p className="text-lg text-gray-300 mt-5">DATE & TIME</p>
-        <p className="text-lg mt-3">{`Tuesday ${date} at ${time}`}</p>
+        <p className="text-lg mt-3">{`Tuesday ${date} at ${time} WIB`}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">MOVIE TITLE</p>
         <p className="text-lg mt-3">{title}</p>
@@ -85,7 +100,7 @@ function Payment(){
         <p className="text-lg mt-3">{`${ticketCount} pieces`}</p>
         <hr className="border-gray-300 my-3 w-full" />
         <p className="text-lg text-gray-300 mt-5">TOTAL PAYMENT</p>
-        <p className="text-lg mt-3 text-blue-800 font-bold">{ticketCount * price}</p>
+        <p className="text-lg mt-3 text-blue-800 font-bold">Rp. {ticketCount * price}</p>
         <hr className="border-gray-300 my-3 w-full" />
 
         <h1 className="font-bold text-2xl mt-10">PERSONAL INFORMATION</h1>
@@ -109,32 +124,32 @@ function Payment(){
                         />
 
         <h1 className="font-bold text-2xl mt-10">PAYMENT METHOD</h1>
-        <div className="flex  lg:flex-row gap-x-10 mt-10">
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-x-10 gap-y-10 mt-10">
+            <div className="btn border border-gray-300 w-full  lg:w-1/5 py-auto  items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary">
                 <img src={Googlepay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full lg:w-1/5 py-auto items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary cursor-pointer">
+                <img src={visa} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full lg:w-1/5 py-auto items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary cursor-pointer">
+                <img src={gopay} alt=""/>
             </div>
-            <div className="border border-gray-300 w-1/4 py-5 items-center flex justify-center items-center rounded-lg">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full lg:w-1/5 py-auto items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary cursor-pointer">
+                <img src={paypal} alt=""/>
             </div>
         </div>
-        <div className="flex flex-row gap-x-10 mt-10">
-            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
-                <img src={Googlepay} alt=""/>
+        <div className="flex flex-col lg:flex-row gap-x-10 gap-y-10 mt-10">
+            <div className="btn border border-gray-300 w-full  lg:w-1/5 py-auto  items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary">
+                <img src={dana} alt=""/>
             </div>
-            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full  lg:w-1/5 py-auto  items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary">
+                <img src={bca} alt=""/>
             </div>
-            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full  lg:w-1/5 py-auto  items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary">
+                <img src={bri} alt=""/>
             </div>
-            <div className="border border-gray-300 w-full md:w-1/2 py-5 flex justify-center items-center rounded-lg md:mb-0 mb-4">
-                <img src={Googlepay} alt=""/>
+            <div className="btn border border-gray-300 w-full  lg:w-1/5 py-auto  items-center flex justify-center items-center rounded-lg focus:outline-none focus:ring focus:ring-primary">
+                <img src={ovo} alt=""/>
             </div>
         </div>
         <button className="w-full bg-blue-700 text-white py-5 mt-5 font-bold " onClick={()=>window.my_modal_2.showModal()}>Pay your order</button>
@@ -148,9 +163,9 @@ function Payment(){
             </div>
             <div className="flex justify-between mt-3">
                 <p>Total Payment</p>
-                <p className="text-blue-600">$30</p>
+                <p className="text-blue-600">Rp.{ticketCount * price}</p>
              </div>
-             <p>Pay this payment bill before it is due, <span className="text-red-400">on June 23, 2023</span>. If the bill has not been paid by the specified time, it will be forfeited</p>
+             <p>Pay this payment bill before it is due, <span className='text-rose-600'>{moment(date).add(2, 'day').format('DD MMMM YYYY')}.</span>. If the bill has not been paid by the specified time, it will be forfeited</p>
             
              <div className="btn text-white w-full bg-blue-700 mt-5" onClick={purchase}>Check Payment</div>
              <div className="text-center mt-3">

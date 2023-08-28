@@ -12,15 +12,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { confirmationdetails, confirmationseats } from "../../store/reducer/user";
+import { Show } from "../../helpers/toast";
+
 function Order () {
     const dispatch = useDispatch()
     const params = useParams()
-    const navigate = useNavigate
+    const navigate = useNavigate()
     const [details, setDetails] = useState([])
     const [image, setImage] = useState('')
     const [storeData, setStoreData] = useState({})
     const { seats, title, premiere, date, time, tickets } = useSelector ((s) => s.users)
-
+    const [genres, setGenres] = useState([])
+    const {isAuth} = useSelector((s)=> s.users)
     
 
     const inputChange = (e) => {
@@ -31,6 +34,8 @@ function Order () {
     const getMovies = async () => {
         try {
             const {data} = await axios.get('http://localhost:8081/times_schedules/' + params.id)
+            console.log(data.data)
+            setGenres(data.data[0].genres)
             setDetails(data.data[0])
             setImage(data.data[0].image_premier)
             dispatch(
@@ -50,7 +55,12 @@ function Order () {
     }
     useEffect(()=>{
         getMovies()
+        if(!isAuth){
+            navigate("/")
+            Show("You need to Log In First to book ticket", "error")
+        }
       }, [])
+    
  
       const handleContinue = () => {
         dispatch(confirmationseats(storeData))
@@ -69,15 +79,23 @@ function Order () {
         <div className="flex flex-row w-full mt-5">
             <div className="bg-white w-full lg:w-2/3 mx-5 rounded-lg px-5 py-5">
             <div className=" border border-gray-300 mt-5 px-5 py-5 flex flex-row gap-x-5">
-                <img src={image} className="bg-cover bg-center w-1/3" alt="" />
+                <img src={details.image_movie} className="bg-cover bg-center w-1/3" alt="" />
                 <div className="w-2/3">
                     <h1>{details.title}</h1>
                     <div className="flex flex-row">
-                    <div className="block bg-gray-100 rounded-lg px-2 py-1 text-gray-400">Genre</div>
-                    <div className="block bg-gray-100 rounded-lg px-2 py-1 text-gray-400">Genre</div>
+                            {genres ? 
+                            genres.map((v, index)=> {
+                                return (
+                                    <div>
+                                    <div className={`block bg-gray-100 rounded-lg px-2 py-1 text-gray-400 ${index == 2 ? 'hidden': ''}`}>
+                                        {v.name_genre}
+                                    </div>
+                                    </div>
+                                )}) : ''                    
+                        }
                     </div>
                     <div className="flex flex-row justify-between">
-                        <p>{`Regular - ${details.time_schedule}`}</p>
+                        <p>{`Regular - ${details.time_schedule} WIB`}</p>
                     <button className="rounded-lg bg-blue-700 text-white px-5 py-2" onClick={() => navigate(`/movie/detail/${details.id_movie}`)}>Change</button>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../helpers/useApi";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Tickets() {
     const params = useParams()
@@ -24,7 +25,6 @@ function Tickets() {
             const data = response.data;
             setDetails(data.data[0])
             setSchedule(data.data[0].schedule[0])
-            console.log(data);
             const ticketData = data.data[0].seats 
             const ticketsArray = ticketData.split(",");
             const ticketCount = ticketsArray.length;
@@ -43,7 +43,7 @@ function Tickets() {
     return(
         <>
         <Navbar/>
-        <main className="w-full bg-background flex flex-row gap-x-20">
+        <main className="w-full bg-background flex flex-col lg:flex-row gap-x-20 items-center justify-center">
         <div className="relative">
         <img src={background} className=" object-cover brightness-50" alt="" />
         <div className="absolute inset-0 flex ml-40 items-start justify-center flex-col">
@@ -54,9 +54,9 @@ function Tickets() {
          </div>
         </div>
        <div className="h-full flex flex-col gap-y-5">
-       <div>
+       <div className="w-full ">
        <img src={tiket} className="h-full mt-20" alt="" />
-       <div className="bg-white pb-10">
+       <div className="bg-white pb-10 w-full">
        <div className="flex flex-row justify-between mx-5 pt-5">
             <div>
                 <p>Movie</p>
@@ -96,7 +96,7 @@ function Tickets() {
        </div>
        </div>
        <button className="w-full border border-blue-600 py-3 text-blue-600 font-bold">Download</button>
-       <button className="w-full border bg-blue-600 text-white font-bold py-3">Done</button>
+       <Link to="/profile/history" className="btn w-full border bg-blue-600 text-white font-bold py-3">Done</Link>
        </div>
         </main>
         <Footer/>
