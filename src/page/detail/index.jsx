@@ -6,6 +6,7 @@ import useApi from '../../helpers/useApi'
 import moment from "moment/moment"
 import MovieDetail from '../../component/moviedetail'
 import Pagination from "../../component/pagination"
+import { useSelector } from "react-redux";
 
 function Detail() {
     const params = useParams()
@@ -23,6 +24,7 @@ function Detail() {
     const [date, setdate] = useState("")
     const [time, settime] = useState("")
     const [loc, setloc] = useState("")
+    const { isAuth } = useSelector((s) => s.users);
     const api = useApi()
     const navigate = useNavigate()
     const limitSch = 4
@@ -79,6 +81,12 @@ function Detail() {
     useEffect(() => {
         getSch()
     }, [pickSch, pageactive])
+
+    useEffect(()=>{
+        if(!isAuth){
+            navigate('/sign-in')
+        }
+    },[])
 
     return (
         <div>

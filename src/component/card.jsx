@@ -7,9 +7,9 @@ const navigate = useNavigate()
     
     return (
         <div>
-            <div className="card-movie w-32 h-fit group">
+            <div className="card-movie w-48 group">
                 <div className="card-overflow relative overflow-hidden">
-                    <img src={image} className="object-cover" alt=""/>
+                    <img src={image} className="object-cover h-[320px]" alt=""/>
                     <div className="absolute h-full w-full bg-black/20 flex items-center justify-center -bottom-0 group-hover:bottom:0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="flex flex-col gap-y-2">
                             <button className="border text-white rounded-md p-2 text-sm" onClick={()=>navigate(`/movie/detail/${id}`)}>
