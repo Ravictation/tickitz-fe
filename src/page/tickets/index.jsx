@@ -10,7 +10,7 @@ import useApi from "../../helpers/useApi";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import moment from "moment";
 function Tickets() {
     const params = useParams()
     const { isAuth } = useSelector((s)=>s.users)
@@ -19,11 +19,14 @@ function Tickets() {
     const [details, setDetails] = useState([])
     const [schedule, setSchedule] = useState('')
     const [count, setCount] = useState('')
+    const [timer, settimer] = useState('')
     const getMovies = async () => {
         try {
             const response = await api({ method: 'get', url: `/bookings?id_booking=${params.id}` });
             const data = response.data;
+            console.log(data)
             setDetails(data.data[0])
+            settimer(data.data[0].schedule[0].time_schedule.split(":")[0] + ":" + data.data[0].schedule[0].time_schedule.split(":")[1] + " WIB")
             setSchedule(data.data[0].schedule[0])
             const ticketData = data.data[0].seats 
             const ticketsArray = ticketData.split(",");
@@ -33,6 +36,7 @@ function Tickets() {
             console.log(error);
         }
     };
+    console.log(timer)
     useEffect(() => {
         getMovies();
         if(!isAuth){
@@ -70,11 +74,11 @@ function Tickets() {
        <div className="flex flex-row justify-between mx-5 pt-5">
             <div>
                 <p>Date</p>
-                <p className="font-bold">{schedule.set_date}</p>
+                <p className="font-bold">{moment.utc(schedule.set_date).utc().format('dddd, DD MMMM YYYY')}</p>
             </div>
             <div>
                 <p>Time</p>
-                <p className="font-bold">{schedule.time_schedule}</p>
+                <p className="font-bold">{timer}</p>
             </div>
        </div>
        <div className="flex flex-row justify-between mx-5 pt-5">

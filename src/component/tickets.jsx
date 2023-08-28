@@ -7,7 +7,6 @@ function Ticketscard ({premier, title, date, time, seats, total} ) {
     const ticketData = seats; 
     const ticketsArray = ticketData.split(",");
     const ticketCount = ticketsArray.length;
-
   const toggleShowDetails = () => {
     setShowDetails(!showDetails);
   };

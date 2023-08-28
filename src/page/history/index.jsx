@@ -39,9 +39,10 @@ function History () {
                 method: "GET",
                 url: `/bookings/user?limit=2&page=${pageactive}`
             });
-
+            
             setmetabooking(response.data.meta)
             const data = response.data;
+            console.log(data)
             setBooking(data.data);
         } catch (error) {
             console.log(error);
@@ -74,7 +75,8 @@ useEffect(() =>{
   if (isAuth) {
       fetchUser();
   }
-}, [isAuth, pageactive]);
+  getBooking();
+}, [isAuth,pageactive]);
     
 useEffect(() =>{
     getBooking();

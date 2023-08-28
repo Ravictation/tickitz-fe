@@ -25,7 +25,7 @@ function Payment(){
     const navigate = useNavigate()
     const api = useApi()
     const params = useParams()
-
+    const now = new Date()
     const generateVirtualAccount = () => {
         const randomNumbers = Array.from({ length: 20 }, () => Math.floor(Math.random() * 10));
         const virtualAccountNumber = randomNumbers.join("");
@@ -165,7 +165,7 @@ function Payment(){
                 <p>Total Payment</p>
                 <p className="text-blue-600">Rp.{ticketCount * price}</p>
              </div>
-             <p>Pay this payment bill before it is due, <span className='text-rose-600'>{moment(date).add(2, 'day').format('DD MMMM YYYY')}.</span>. If the bill has not been paid by the specified time, it will be forfeited</p>
+             <p>Pay this payment bill before it is due, <span className='text-rose-600'>{moment(now).add(2, 'day').format('DD MMMM YYYY')}.</span>. If the bill has not been paid by the specified time, it will be forfeited</p>
             
              <div className="btn text-white w-full bg-blue-700 mt-5" onClick={purchase}>Check Payment</div>
              <div className="text-center mt-3">

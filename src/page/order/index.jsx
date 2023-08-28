@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { confirmationdetails, confirmationseats } from "../../store/reducer/user";
 import { Show } from "../../helpers/toast";
+import moment from 'moment'
 
 function Order () {
     const dispatch = useDispatch()
@@ -24,7 +25,9 @@ function Order () {
     const { seats, title, premiere, date, time, tickets } = useSelector ((s) => s.users)
     const [genres, setGenres] = useState([])
     const {isAuth} = useSelector((s)=> s.users)
-    
+    // let timee = details.time_schedule
+    // let time_a = timee.split(":")[0] + ":" + timee.split(":")[1] + " WIB" 
+    const [timer, settimer] = useState('')
 
     const inputChange = (e) => {
         const data = {...storeData}
@@ -34,9 +37,11 @@ function Order () {
     const getMovies = async () => {
         try {
             const {data} = await axios.get('http://localhost:8081/times_schedules/' + params.id)
-            console.log(data.data)
+
             setGenres(data.data[0].genres)
             setDetails(data.data[0])
+            settimer(data.data[0].time_schedule.split(":")[0] + ":" + data.data[0].time_schedule.split(":")[1] + " WIB")
+
             setImage(data.data[0].image_premier)
             dispatch(
                 confirmationdetails({
@@ -53,6 +58,7 @@ function Order () {
             console.log(error)
         }
     }
+
     useEffect(()=>{
         getMovies()
         if(!isAuth){
@@ -78,9 +84,10 @@ function Order () {
         </div>
         <div className="flex flex-row w-full mt-5">
             <div className="bg-white w-full lg:w-2/3 mx-5 rounded-lg px-5 py-5">
-            <div className=" border border-gray-300 mt-5 px-5 py-5 flex flex-row gap-x-5">
-                <img src={details.image_movie} className="bg-cover bg-center w-1/3" alt="" />
-                <div className="w-2/3">
+            <div className=" border border-gray-300 mt-5 px-5 py-5 flex flex-row justify-between items-center">
+            
+                    <img src={details.image_movie} className="bg-cover bg-center max-w-[250px] h-[200px] mr-10" alt="" />
+                <div className="w-full">
                     <h1>{details.title}</h1>
                     <div className="flex flex-row">
                             {genres ? 
@@ -95,8 +102,10 @@ function Order () {
                         }
                     </div>
                     <div className="flex flex-row justify-between">
-                        <p>{`Regular - ${details.time_schedule} WIB`}</p>
-                    <button className="rounded-lg bg-blue-700 text-white px-5 py-2" onClick={() => navigate(`/movie/detail/${details.id_movie}`)}>Change</button>
+                        <p>{`Regular - ${timer}`}</p>
+                    <div className="flex justify-end">
+                        <button className="rounded-lg bg-blue-700 text-white px-10 py-2 " onClick={() => navigate(`/movie/detail/${details.id_movie}`)}>Change</button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -158,6 +167,7 @@ function Order () {
             <div className="w-1/3 mx-5 rounded-lg h-full hidden lg:block">
                 <div className="bg-white flex flex-col pt-10 pb-10 justify-items-center rounded-lg">
                    <div className="items-center justify-center flex">
+                   
                    <img src={image} className="bg-cover w-1/2" alt="" />
                    </div>
                     <h1 className="font-bold text-xl text-center">{details.name_premier}</h1>
@@ -166,8 +176,8 @@ function Order () {
                         <p>{details.title}</p>
                     </div>
                     <div className="flex flex-row justify-between mx-5">
-                        <p>Date</p>
-                        <p>{details.time_schedule}</p>
+                        <p>{moment.utc(details.set_date).utc().format('dddd, DD MMMM YYYY')}</p>
+                        <p>{timer}</p>
                     </div>
                     <div className="flex flex-row justify-between mx-5">
                         <p>One Ticket Price</p>
