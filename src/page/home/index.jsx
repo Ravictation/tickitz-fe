@@ -18,6 +18,7 @@ function Home() {
     const [filterSearch, setFilterSearch] = useState([])
     const [pageActive, setPageActive] = useState(1)
     const [metaMovies, setMetaMovies] = useState([])
+
     //const [release, setRelease] = useState('')
     const api = useApi();
     const limit = 11
@@ -25,32 +26,32 @@ function Home() {
     const { isAuth } = useSelector((s) => s.users);
     const navigate = useNavigate()
 
-    const getMovies = async()=>{
+    const getMovies = async () => {
         api({
-            method : 'GET',
-            url : `/movies?page=${pageActive}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}` ,
-            data: movies    
-        }) 
-            .then(({data})=>{
+            method: 'GET',
+            url: `/movies?page=${pageActive}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}`,
+            data: movies
+        })
+            .then(({ data }) => {
                 setMovies(data.data)
                 setMetaMovies(data.meta)
                 //setRelease(movies.release_date)
-                console.log(data.data)
+                // console.log(data.data)
             })
-            .catch((err)=>{
+            .catch((err) => {
                 setMovies(false)
                 setMetaMovies(false)
                 console.log(err)
-        })
+            })
     }
     //console.log(release)
 
-    
+
     console.log(movies)
     console.log()
-    const getGenre = async() =>{
+    const getGenre = async () => {
         try {
-            const {data} = await api(`http://localhost:8081/genres?${limit}`)
+            const { data } = await api(`http://localhost:8081/genres?${limit}`)
             setGenres(data.data)
         } catch (error) {
             console.log(error)
@@ -61,26 +62,26 @@ function Home() {
         try {
             const { data } = await api.get('http://localhost:8081/user/');
             dispatch(addData(data.data));
-            console.log(data);
+            // console.log(data);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handlerSearch = (e) =>{
-        if(e.target.value !== ''){
+    const handlerSearch = (e) => {
+        if (e.target.value !== '') {
             setFilterSearch(e.target.value)
-        }else{
+        } else {
             setFilterSearch('')
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchUser()
-        if(!isAuth){
+        if (!isAuth) {
             navigate('/')
         }
-    },[])
+    }, [])
 
     useEffect(() => {
         getMovies();
@@ -90,26 +91,29 @@ function Home() {
         }
     }, [isAuth]);
 
-    useEffect(()=>{
+    useEffect(() => {
         getGenre()
-    },[limit])
+    }, [limit])
 
-
-
-
-    useEffect(()=>{
+    function capitalTitle(text) {
+        return (text.replace(/\w\S*/g, function (word) {
+            const newWord = word.slice(0, 1).toUpperCase() + word.substr(1);
+            return newWord
+        }))
+    }
+    useEffect(() => {
         getMovies()
-    },[pageActive, filterSearch, filterGenre, limit])
+    }, [pageActive, filterSearch, filterGenre, limit])
 
-    useEffect(()=>{
+    useEffect(() => {
         setPageActive(1)
         getMovies()
-    },[])
+    }, [])
 
     return (
         <>
             <Navbar />
-            <ImageSlide/>
+            <ImageSlide />
 
             <section className="main-section px-20 mt-20">
                 <div className="flex xs:flex-col lg:flex-row xs:gap-y-5 lg:gap-y-0 genre-search-movie w-full">
@@ -130,18 +134,18 @@ function Home() {
                     </div>
 
                     <div className="filter-genre lg:w-3/5 xs:w-full">
-                    <label className="lg:ms-6">Filter</label>
-                    <div className="p-2 px-3 flex flex-row lg:gap-x-5 lg:mt-2 md:-ms-6 lg:ms-0 xs:overflow-x-scroll md:overflow-x-hidden">
-                        {genres ?
-                            genres.map((v)=>{
-                                return (
-                                    <div>
-                                    <div className="p-2 px-3 rounded-md hover:bg-button hover:cursor-pointer hover:text-white bg-white text-black" onClick={()=> setFilterGenre(v.id_genre)}>{v.name_genre}</div>
-                                    </div>
-                                )
-                            }):(
-                                <h1>Data Not Found</h1>
-                            )}
+                        <label className="lg:ms-6">Filter</label>
+                        <div className="p-2 px-3 flex flex-row lg:gap-x-5 lg:mt-2 md:-ms-6 lg:ms-0 xs:overflow-x-scroll md:overflow-x-hidden">
+                            {genres ?
+                                genres.map((v) => {
+                                    return (
+                                        <div>
+                                            <div className={(v.id_genre == filterGenre ? "bg-button text-white" : "bg-white") + " p-2 px-3 rounded-md hover:bg-button hover:cursor-pointer hover:text-white  text-black"} onClick={() => setFilterGenre(v.id_genre)}>{capitalTitle(v.name_genre)}</div>
+                                        </div>
+                                    )
+                                }) : (
+                                    <h1>Data Not Found</h1>
+                                )}
                         </div>
                     </div>
                 </div>
@@ -161,13 +165,13 @@ function Home() {
 
 
             <div className="w-full pagination flex justify-center">
-                    <Pagination meta={metaMovies} page_active={pageActive} set_page_active={setPageActive}/>
+                <Pagination meta={metaMovies} page_active={pageActive} set_page_active={setPageActive} />
             </div>
-            
-       <div className="subscribe px-20 mt-10">
-            <BgSubscribe/>
-       </div>
-    
+
+            <div className="subscribe px-20 mt-10">
+                <BgSubscribe />
+            </div>
+
             <Footer />
         </>
     )
