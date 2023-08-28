@@ -67,7 +67,7 @@ function Profile() {
             .then(({ data }) => {
               Show('Data Updated', 'success');
               setTimeout(() => {
-                navigate('/');
+              window.location.reload();
               }, 3050);
             })
             .catch((err) => {
