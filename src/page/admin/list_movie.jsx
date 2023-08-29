@@ -80,7 +80,7 @@ function List_Movie() {
     return (
         <>
             <Navbar />
-            <section className='bg-background px-5 md:px-20 py-10'>
+            <section className='bg-background px-5 md:px-20 py-10 h-screen'>
                 <div>
                     <div className="grid grid-row-3 bg-white rounded-2xl px-10 py-5">
                         <div className="grid grid-rows-2 md:flex">
@@ -192,7 +192,6 @@ function List_Movie() {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     )
 }

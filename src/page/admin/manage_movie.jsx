@@ -295,6 +295,19 @@ function Manage_Movie() {
         settimes([])
     }
 
+
+    const check_image = async () => {
+        if (image != "") {
+            if (image.name) {
+                if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+                    Show('Please select valid image (jpg|jpeg|png).', "error");
+                    setimagereader('')
+                    setimage('')
+                }
+            }
+        }
+    };
+
     // ----------------------------------------------
     useEffect(() => {
         document.title = "Manage Movie";
@@ -307,7 +320,8 @@ function Manage_Movie() {
     }, []);
     useEffect(() => {
         deletetotimes();
-    }, [deltime]);
+        check_image()
+    }, [deltime, image]);
 
     return (
         <>
@@ -641,7 +655,6 @@ function Manage_Movie() {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     )
 }
