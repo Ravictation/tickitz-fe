@@ -24,7 +24,7 @@ function MovieDetail({ bgFoto, genre, foto, title, directed, hour, time, release
                     </div>
                 </div>
 
-                <div className="detail-info md:grid md:col-start-3 md:col-span-6 xs:mt-60 sm:mt-25 md:mt-0 xs:p-6 md:p-0">
+                <div className="detail-info md:grid md:col-start-3 md:col-span-6 xs:mt-60 sm:mt-25 md:mt-0 md:ms-7 lg:ms-0 xs:p-6 md:p-0">
                     <div className="wrapper-detail-info flex flex-col">
                         <div className="wrapper-title-genre xs:text-center">
                             <h3 className="text-3xl flex font-semibold mt-2 xs:text-center xs:justify-center md:justify-normal">{capitalTitle(title)}</h3>

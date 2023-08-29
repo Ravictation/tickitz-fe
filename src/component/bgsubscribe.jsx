@@ -11,11 +11,8 @@ const Subscribe = () => {
 
 
 
-            <div className="absolute xs:-mt-72 xs:w-[50%] xl:mx-8 xl:-mt-64 sm:-mt-80 sm:mx-8 xs:mx-4 md:mx-0 md:-mt-36 lg:-mt-44 md:w-[90%] lg:w-[90%] xl:w-[85%]">
+            <div className="absolute xs:-mt-72 xs:w-[50%] xl:mx-8 xl:-mt-64 sm:-mt-80 sm:mx-8 xs:mx-4 md:-mx-10 lg:mx-0 md:-mt-36 lg:-mt-44 md:w-[90%] lg:w-[90%] xl:w-[85%]">
 
-                {/** 
-            <div class="bg-cover bg-center h-screen flex items-center justify-center bg-backgroundLetter ">
-*/}
                 <div className="w-full text-center mb-5 xs:text-2xl sm:text-3xl text-white lg:text-4xl md:text-2xl sm:text-md">
                     <p>Subscribe to our newsletter</p>
                 </div>
