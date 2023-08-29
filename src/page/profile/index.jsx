@@ -182,8 +182,7 @@ function Profile() {
                                             name="first_name"
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                            placeholder="Jonas"
-                                            value={`${capitalTitle(data.first_name)}`}
+                                            placeholder={`${capitalTitle(data.first_name)}`}
                                             onChange={inputChange}
                                         />
                                     </div>
@@ -193,8 +192,7 @@ function Profile() {
                                             name="last_name"
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                            placeholder="Jonas"
-                                            value={`${capitalTitle(data.last_name)}`}
+                                            placeholder={`${capitalTitle(data.last_name)}`}
                                             onChange={inputChange}
                                         />
                                     </div>
@@ -204,7 +202,7 @@ function Profile() {
                                             name="email_user"
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                            placeholder="Jonas"
+                                            placeholder={`${data.email_user}`}
                                             onChange={inputChange}
                                         />
                                         {errors.email_user && (
@@ -217,7 +215,7 @@ function Profile() {
                                             name="phone_number"
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                            placeholder="Jonas"
+                                            placeholder={data.phone_number ? data.phone_number : ""}
                                             onChange={inputChange}
                                         />
                                     </div>
@@ -277,8 +275,7 @@ function Profile() {
                                     name="first_name"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="Jonas"
-                                    value={`${capitalTitle(data.first_name)}`}
+                                    placeholder={`${capitalTitle(data.first_name)}`}
                                     onChange={inputChange}
                                 />
                             </div>
@@ -288,8 +285,7 @@ function Profile() {
                                     name="last_name"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="Jonatan"
-                                    value={`${capitalTitle(data.last_name)}`}
+                                    placeholder={`${capitalTitle(data.last_name)}`}
                                     onChange={inputChange}
                                 />
                             </div>
@@ -299,8 +295,7 @@ function Profile() {
                                     name="email_user"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="budi@mail.com"
-                                    value={`${data.email_user}`}
+                                    placeholder={`${data.email_user}`}
                                     onChange={inputChange}
                                 />
                                 {errors.email_user && (
@@ -313,8 +308,7 @@ function Profile() {
                                     name="phone_number"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="087734768584"
-                                    value={data.phone_number ? data.phone_number : ""}
+                                    placeholder={data.phone_number ? data.phone_number : ""}
                                     onChange={inputChange}
                                 />
                             </div>
