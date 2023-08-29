@@ -135,7 +135,7 @@ const Navbar = ({ btnlogout_trigger, modal_logout_profile }) => {
       </div>
 
       <div className={menu_desktop ? "hidden" : "hidden lg:grid absolute bg-white rounded shadow-md right-24 top-[4.5rem]"}>
-        <p className="px-3 py-2 tracking-wide font-normal border-b">{data ? data.first_name != "" && data.last_name != "" ? capital(data.first_name + ' ' + data.last_name) : "No Name" : 'Guest'}</p>
+        <p className="px-3 py-2 tracking-wide font-normal border-b">{data ? data.first_name != "" || data.last_name != "" ? capital(data.first_name + ' ' + data.last_name) : "No Name" : 'Guest'}</p>
         <Link className="px-3 tracking-wide font-normal hover:font-bold" to="/profile">Profile</Link>
         <p><Link className="px-3 tracking-wide font-normal hover:font-bold" onClick={show_modal_logout}>Logout</Link>
         </p>

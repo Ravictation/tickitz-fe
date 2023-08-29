@@ -11,6 +11,7 @@ import loyalty from "../../assets/loyalty.jpg"
 import { useDispatch } from "react-redux";
 import { addData } from "../../store/reducer/user";
 import Pagination from "../../component/pagination"
+import noimage from "../../assets/noimage.png"
 
 function History() {
   const dispatch = useDispatch()
@@ -22,13 +23,16 @@ function History() {
   const api = useApi()
   const navigate = useNavigate()
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  const [image, setimage] = useState(data ? data.image_user : '');
+  const [imagereader, setimagereader] = useState("");
+  const imgRef = useRef(null);
+
   const fetchUser = async () => {
     try {
       const { data } = await api.get('http://localhost:8081/user/');
       dispatch(addData(data.data));
+      setimage(data.data.image_user)
+      setimagereader("")
     } catch (error) {
       console.log(error);
     }
@@ -46,37 +50,51 @@ function History() {
       console.log(error);
     }
   };
-  console.log(metabooking)
   const UpdateImage = async () => {
     try {
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append("image_user", selectedFile);
+      const formData = new FormData();
+      formData.append("image_user", image);
 
-        const { data } = await api({
-          url: "/user/image",
-          method: "PATCH",
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      }
+      const { data } = await api({
+        url: "/user/image",
+        method: "PATCH",
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       Show("Image updated successfully", "success");
-      window.location.reload();
-
+      fetchUser()
+      setimagereader("")
     } catch (error) {
       console.error("Error updating image:", error);
       Show("Error updating image", "error");
     }
   };
 
-  useEffect(() => {
-    if (isAuth) {
-      fetchUser();
+  const check_image = async () => {
+    if (image != "") {
+      if (image.name) {
+        if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+          Show('Please select valid image (jpg|jpeg|png).', "error");
+          setimagereader('')
+          setimage('')
+        }
+      }
     }
+  };
+
+  function capitalTitle(text) {
+    return (text.replace(/\w\S*/g, function (word) {
+      const newWord = word.slice(0, 1).toUpperCase() + word.substr(1);
+      return newWord
+    }))
+  }
+
+  useEffect(() => {
     getBooking();
-  }, [isAuth, pageactive]);
+  }, [pageactive, imagereader]);
 
   useEffect(() => {
     getBooking();
@@ -84,6 +102,10 @@ function History() {
       navigate('/')
     }
   }, [])
+
+  useEffect(() => {
+    check_image()
+  }, [image]);
 
 
   return (
@@ -93,16 +115,29 @@ function History() {
         <div className="w-1/4 bg-white rounded-lg flex flex-col items-center justify-center pt-5 pb-5 h-full hidden lg:flex">
           <p className="text-left mb-3 font-bold">INFO</p>
           <div className="flex flex-col justify-center items-center relative group">
-            <div className="h-28 w-28">
-              <img src={data.image_user} className="cursor-pointer w-full h-full object-cover rounded-full" alt="profile_picture" />
+            <div className="h-28 w-28" id="file" onClick={() => { imgRef.current.showPicker(); }}>
+              <img src={
+                imagereader == ""
+                  ? image == ""
+                    ? noimage
+                    : image
+                  : imagereader
+              } className="cursor-pointer w-full h-full object-cover rounded-full" alt="profile_picture" />
             </div>
+            <input
+              type="file"
+              ref={imgRef}
+              multiple
+              accept="image/*"
+              onChange={(e) => [
+                setimage(e.target.files[0]),
+                setimagereader(URL.createObjectURL(e.target.files[0])),
+              ]}
+              className="hidden h-10 w-full border rounded pl-3"
+            />
             <p className="btn mt-10" onClick={UpdateImage} >update image</p>
-            <span className="flex items-center gap-4 mt-3">
-              <input type="file" name="image_user" onChange={handleFileChange} />
-            </span>
           </div>
-          <p className="font-bold text-xl mt-5 text-center">{`${data.first_name} ${data.last_name}`}</p>
-          <p className="mt-5 text-center">Moviegoers</p>
+          <p className="font-bold text-xl mt-5 text-center">{data.first_name || data.last_name ? capitalTitle(`${data.first_name} ${data.last_name}`) : "No name"}</p>
           <hr className="border-gray-300 my-3 w-full" />
           <img className="mt-5" src={loyalty} alt="Loyalty" />
           <p className="mt-5 mb-5 text-center">180 points become a master</p>

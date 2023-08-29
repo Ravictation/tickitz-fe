@@ -1,37 +1,37 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "../../component/navbar";
 import Footer from "../../component/footer";
 import loyalty from "../../assets/loyalty.jpg"
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { Show } from "../../helpers/toast";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../helpers/useApi";
-import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addData } from "../../store/reducer/user";
+import noimage from "../../assets/noimage.png"
 
 function Profile() {
     const { data, isAuth } = useSelector((s) => s.users)
     const navigate = useNavigate()
     const api = useApi()
-    const [selectedFile, setSelectedFile] = useState(null);
     const inputChange = (e) => {
         const data = { ...form };
         data[e.target.name] = e.target.value;
         setForm(data);
     };
 
+    const [image, setimage] = useState(data ? data.image_user : '');
+    const [imagereader, setimagereader] = useState("");
+    const imgRef = useRef(null);
 
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-    };
     const fetchUser = async () => {
         try {
             const { data } = await api.get('http://localhost:8081/user/');
             dispatch(addData(data.data));
+            setimage(data.data.image_user)
+            setimagereader("")
         } catch (error) {
             console.log(error);
         }
@@ -82,35 +82,50 @@ function Profile() {
     };
     const UpdateImage = async () => {
         try {
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append("image_user", selectedFile);
+            const formData = new FormData();
+            formData.append("image_user", image);
 
-                const { data } = await api({
-                    url: "/user/image",
-                    method: "PATCH",
-                    data: formData,
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-
-            }
-
+            const { data } = await api({
+                url: "/user/image",
+                method: "PATCH",
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            fetchUser()
             Show("Image updated successfully", "success");
-            window.location.reload();
-
+            setimagereader("")
         } catch (error) {
             console.error("Error updating image:", error);
             Show("Error updating image", "error");
         }
     };
 
-    useEffect(() => {
-        if (isAuth) {
-            fetchUser();
+    const check_image = async () => {
+        if (image != "") {
+            if (image.name) {
+                if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+                    Show('Please select valid image (jpg|jpeg|png).', "error");
+                    setimagereader('')
+                    setimage('')
+                }
+            }
         }
-    }, [isAuth]);
+    };
+
+    function capitalTitle(text) {
+        return (text.replace(/\w\S*/g, function (word) {
+            const newWord = word.slice(0, 1).toUpperCase() + word.substr(1);
+            return newWord
+        }))
+    }
+
+    useEffect(() => {
+    }, [imagereader]);
+    useEffect(() => {
+        check_image()
+    }, [image]);
     useEffect(() => {
         if (!isAuth) {
             navigate('/')
@@ -127,16 +142,29 @@ function Profile() {
                 <div className="w-full lg:w-1/4 bg-white rounded-lg flex flex-col items-center pt-5 pb-5">
                     <p className="text-left mb-3 font-bold">INFO</p>
                     <div className="flex flex-col justify-center items-center relative group">
-                        <div className="h-28 w-28">
-                            <img src={data.image_user} className="cursor-pointer w-full h-full object-cover rounded-full" alt="profile_picture" />
+                        <div className="h-28 w-28" id="file" onClick={() => { imgRef.current.showPicker(); }}>
+                            <img src={
+                                imagereader == ""
+                                    ? image == ""
+                                        ? noimage
+                                        : image
+                                    : imagereader
+                            } className="cursor-pointer w-full h-full object-cover rounded-full" alt="profile_picture" />
                         </div>
+                        <input
+                            type="file"
+                            ref={imgRef}
+                            multiple
+                            accept="image/*"
+                            onChange={(e) => [
+                                setimage(e.target.files[0]),
+                                setimagereader(URL.createObjectURL(e.target.files[0])),
+                            ]}
+                            className="hidden h-10 w-full border rounded pl-3"
+                        />
                         <p className="btn mt-10" onClick={UpdateImage} >update image</p>
-                        <span className="flex items-center gap-4 mt-3">
-                            <input type="file" name="image_user" onChange={handleFileChange} />
-                        </span>
                     </div>
-                    <p className="font-bold text-xl mt-5">{`${data.first_name} ${data.last_name}`}</p>
-                    <p className="mt-5">Moviegoers</p>
+                    <p className="font-bold text-xl mt-5">{data.first_name || data.last_name ? capitalTitle(`${data.first_name} ${data.last_name}`) : "No name"}</p>
                     <hr className="border-gray-300 my-3 w-full" />
                     <img className="mt-5" src={loyalty} alt="" />
                     <p className="mt-5 mb-5">180 points become a master</p>
@@ -155,6 +183,7 @@ function Profile() {
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
                                             placeholder="Jonas"
+                                            value={`${capitalTitle(data.first_name)}`}
                                             onChange={inputChange}
                                         />
                                     </div>
@@ -165,6 +194,7 @@ function Profile() {
                                             type="text"
                                             className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
                                             placeholder="Jonas"
+                                            value={`${capitalTitle(data.last_name)}`}
                                             onChange={inputChange}
                                         />
                                     </div>
@@ -248,6 +278,7 @@ function Profile() {
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
                                     placeholder="Jonas"
+                                    value={`${capitalTitle(data.first_name)}`}
                                     onChange={inputChange}
                                 />
                             </div>
@@ -257,7 +288,8 @@ function Profile() {
                                     name="last_name"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="Jonas"
+                                    placeholder="Jonatan"
+                                    value={`${capitalTitle(data.last_name)}`}
                                     onChange={inputChange}
                                 />
                             </div>
@@ -267,7 +299,8 @@ function Profile() {
                                     name="email_user"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="Jonas"
+                                    placeholder="budi@mail.com"
+                                    value={`${data.email_user}`}
                                     onChange={inputChange}
                                 />
                                 {errors.email_user && (
@@ -280,7 +313,8 @@ function Profile() {
                                     name="phone_number"
                                     type="text"
                                     className="border border-gray rounded-lg w-3/4 text-black px-3 py-3 mb-6 "
-                                    placeholder="Jonas"
+                                    placeholder="087734768584"
+                                    value={data.phone_number ? data.phone_number : ""}
                                     onChange={inputChange}
                                 />
                             </div>
@@ -320,7 +354,7 @@ function Profile() {
                     </div>
                     <button className="btn bg-blue-500 w-1/4 text-white font-medium" onClick={Update}>Update Changes</button>
                 </div>
-            </main>
+            </main >
             <Footer />
         </>
     )
