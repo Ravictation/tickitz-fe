@@ -38,7 +38,7 @@ function Order() {
 
     const getMovies = async () => {
         try {
-            const { data } = await axios.get('http://localhost:8081/times_schedules/' + params.id)
+            const { data } = await axios.get(process.env.REACT_APP_BACKEND_URL+ '/times_schedules/' + params.id)
 
             setGenres(data.data[0].genres)
             setDetails(data.data[0])

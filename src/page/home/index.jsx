@@ -29,7 +29,7 @@ function Home() {
     const getMovies = async () => {
         api({
             method: 'GET',
-            url: `/movies?page=${pageActive}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}`,
+            url: `/movies/?page=${pageActive}&limit=${limit}&by_genre=${filterGenre}&search=${filterSearch}`,
             data: movies
         })
             .then(({ data }) => {
@@ -47,20 +47,20 @@ function Home() {
     //console.log(release)
 
 
-    console.log(movies)
-    console.log()
+
     const getGenre = async () => {
         try {
-            const { data } = await api(`http://localhost:8081/genres?${limit}`)
+            const { data } = await api(process.env.REACT_APP_BACKEND_URL + `/genres/?${limit}`)
             setGenres(data.data)
         } catch (error) {
             console.log(error)
         }
     }
 
+
     const fetchUser = async () => {
         try {
-            const { data } = await api.get('http://localhost:8081/user/');
+            const { data } = await api.get(process.env.REACT_APP_BACKEND_URL +'/user/');
             dispatch(addData(data.data));
             // console.log(data);
         } catch (error) {

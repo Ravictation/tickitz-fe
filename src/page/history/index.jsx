@@ -29,7 +29,7 @@ function History() {
 
   const fetchUser = async () => {
     try {
-      const { data } = await api.get('http://localhost:8081/user/');
+      const { data } = await api.get(process.env.REACT_APP_BACKEND_URL + '/user/');
       dispatch(addData(data.data));
       setimage(data.data.image_user)
       setimagereader("")

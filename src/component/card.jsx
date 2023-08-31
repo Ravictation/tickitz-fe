@@ -6,9 +6,9 @@ function CardMovie({ id, name, release, image, genre }) {
     const m2 = ('0' + (date.getMonth() + 1)).slice(-2)
     const m3 = date.getFullYear()
     const m1 = release.split('-')
-    console.log(m1)
 
-    console.log(m3)
+
+
 
     function capitalTitle(text) {
         return (text.replace(/\w\S*/g, function (word) {

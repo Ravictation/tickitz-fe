@@ -47,7 +47,7 @@ function Signup() {
     e.preventDefault();
     if (validateForm() && isChecked) {
       try {
-        const response = await axios.post("http://localhost:8081/user/", form);
+        const response = await axios.post(process.env.REACT_APP_BACKEND_URL+'/user/', form);
         Show("Registration Success", "success");
 
         setTimeout(() => {

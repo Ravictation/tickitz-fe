@@ -4,10 +4,10 @@ import signup from "../../assets/signup.png";
 import welcome from "../../assets/welcomeback.PNG"
 import logo from "../../assets/tickitz 1.png"
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Show } from "../../helpers/toast";
 import { login } from "../../store/reducer/user"
+import useApi from "../../helpers/useApi";
 
 function Signin() {
   const [form, setForm] = useState({});
@@ -15,6 +15,7 @@ function Signin() {
   const navigate = useNavigate();
   const { isAuth } = useSelector((s) => s.users)
   const dispatch = useDispatch()
+  const api = useApi()
 
 
   const inputChange = (e) => {
@@ -40,11 +41,12 @@ function Signin() {
   const click_pass = () => {
     setcpass(cpass == true ? false : true)
   }
-
+  console.log(process.env.REACT_APP_BACKEND_URL)
   const Login = async () => {
     if (validateForm()) {
       try {
-        const response = await axios.post("http://localhost:8081/auth/login", form);
+        const response = await api.post(process.env.REACT_APP_BACKEND_URL + '/auth/login', form);
+        console.log(response)
         const data =  response.data;
         Show("Login Success", "success");
         const token = data.data;
