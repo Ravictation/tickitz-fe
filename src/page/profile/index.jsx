@@ -28,7 +28,7 @@ function Profile() {
     const dispatch = useDispatch();
     const fetchUser = async () => {
         try {
-            const { data } = await api.get(process.env.REACT_APP_BACKEND_URL+ '/user/');
+            const { data } = await api.get(process.env.REACT_APP_BACKEND_URL + '/user/');
             dispatch(addData(data.data));
             setimage(data.data.image_user)
             setimagereader("")
@@ -66,6 +66,7 @@ function Profile() {
             })
                 .then(({ data }) => {
                     Show('Data Updated', 'success');
+                    fetchUser()
                     setTimeout(() => {
                         window.location.reload();
                     }, 3050);
